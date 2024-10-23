@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link com.borkdominik.big.glsp.uml.model.impl.MessageAnchorImpl#getId <em>Id</em>}</li>
+ *   <li>{@link MessageAnchorImpl#getId <em>Id</em>}</li>
  * </ul>
  *
  * @generated

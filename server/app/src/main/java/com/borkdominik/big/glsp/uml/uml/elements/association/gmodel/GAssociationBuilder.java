@@ -13,6 +13,7 @@ package com.borkdominik.big.glsp.uml.uml.elements.association.gmodel;
 import java.util.List;
 import java.util.Optional;
 
+import com.borkdominik.big.glsp.server.core.constants.BGQuotationMark;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.glsp.graph.GEdge;
 import org.eclipse.glsp.graph.builder.impl.GEdgePlacementBuilder;
@@ -37,107 +38,125 @@ import com.borkdominik.big.glsp.uml.uml.elements.property.gmodel.suffix.Property
 
 public class GAssociationBuilder<TOrigin extends Association> extends GCEdgeBuilder<TOrigin> {
 
-   public GAssociationBuilder(final GCModelContext context, final TOrigin origin, final String type) {
-      super(context, origin, type);
-   }
+    public GAssociationBuilder(final GCModelContext context, final TOrigin origin, final String type) {
+        super(context, origin, type);
+    }
 
-   @Override
-   public EObject source() {
-      return sourcePropertyElement();
-   }
+    @Override
+    public EObject source() {
+        return sourcePropertyElement();
+    }
 
-   public Property sourceProperty() {
-      var memberEnds = origin.getMemberEnds();
-      return memberEnds.get(0);
-   }
+    public Property sourceProperty() {
+        var memberEnds = origin.getMemberEnds();
+        return memberEnds.get(0);
+    }
 
-   public Element sourcePropertyElement() {
-      var source = sourceProperty();
-      return source.getOwner() instanceof Association ? source.getType()
-         : source.getOwner();
-   }
+    public Element sourcePropertyElement() {
+        var source = sourceProperty();
+        return source.getOwner() instanceof Association ? source.getType()
+                : source.getOwner();
+    }
 
-   @Override
-   public EObject target() {
-      return targetPropertyElement();
-   }
+    @Override
+    public EObject target() {
+        return targetPropertyElement();
+    }
 
-   public Property targetProperty() {
-      var memberEnds = origin.getMemberEnds();
-      return memberEnds.get(1);
-   }
+    public Property targetProperty() {
+        var memberEnds = origin.getMemberEnds();
+        return memberEnds.get(1);
+    }
 
-   public Element targetPropertyElement() {
-      var target = targetProperty();
-      return target.getOwner() instanceof Association ? target.getType()
-         : target.getOwner();
-   }
+    public Element targetPropertyElement() {
+        var target = targetProperty();
+        return target.getOwner() instanceof Association ? target.getType()
+                : target.getOwner();
+    }
 
-   @Override
-   protected List<GCProvider> createComponentChildren(final GEdge gmodelRoot, final GCModelList<?, ?> componentRoot) {
-      var source = sourceProperty();
-      var target = targetProperty();
+    @Override
+    protected List<GCProvider> createComponentChildren(final GEdge gmodelRoot, final GCModelList<?, ?> componentRoot) {
+        var source = sourceProperty();
+        var target = targetProperty();
 
-      return StreamUtils.concat(
-         List.of(createName(componentRoot)),
-         createMemberEnd(gmodelRoot, source, 0.9d, GConstants.EdgeSide.BOTTOM, GConstants.EdgeSide.TOP),
-         createMemberEnd(gmodelRoot, target, 0.1d, GConstants.EdgeSide.TOP, GConstants.EdgeSide.BOTTOM));
-   }
+        return StreamUtils.concat(
+                List.of(createName(componentRoot), createStereoType()),
+                createMemberEnd(gmodelRoot, source, 0.9d, GConstants.EdgeSide.BOTTOM, GConstants.EdgeSide.TOP),
+                createMemberEnd(gmodelRoot, target, 0.1d, GConstants.EdgeSide.TOP, GConstants.EdgeSide.BOTTOM));
+    }
 
-   protected GCProvider createName(final GCModelList<?, ?> root) {
-      if (origin.getName() != null && !origin.getName().isBlank()) {
-         var options = GCNameLabel.Options.builder()
-            .label(origin.getName())
-            .edgePlacement(new GEdgePlacementBuilder()
-               .side(GConstants.EdgeSide.TOP)
-               .position(0.5d)
-               .offset(10d)
-               .rotate(true)
-               .build())
-            .build();
+    protected GCProvider createName(final GCModelList<?, ?> root) {
+        if (origin.getName() != null && !origin.getName().isBlank()) {
+            var options = GCNameLabel.Options.builder()
+                    .label(origin.getName())
+                    .edgePlacement(new GEdgePlacementBuilder()
+                            .side(GConstants.EdgeSide.TOP)
+                            .position(0.5d)
+                            .offset(10d)
+                            .rotate(true)
+                            .build())
+                    .build();
 
-         return new GCNameLabel(context, origin, options);
-      }
+            return new GCNameLabel(context, origin, options);
+        }
+        return new GCNone(context, origin);
 
-      return new GCNone(context, origin);
-   }
+    }
 
-   protected List<GCProvider> createMemberEnd(final GEdge edge, final Property memberEnd, final double position,
-      final String labelSide, final String multiplicitySide) {
+    private GCProvider createStereoType() {
+        if (!origin.getAppliedStereotypes().isEmpty()) {
+            var options = GCNameLabel.Options.builder()
+                    .label(BGQuotationMark.quoteDoubleAngle(origin.getAppliedStereotypes().get(0).getName()))
+                    .edgePlacement(new GEdgePlacementBuilder()
+                            .side(GConstants.EdgeSide.TOP)
+                            .position(0.5d)
+                            .offset(30d)
+                            .rotate(true)
+                            .build())
+                    .build();
 
-      var memberEndId = context.idGenerator.getOrCreateId(memberEnd);
+            return new GCNameLabel(context, origin, options);
+        }
 
-      var name = GCNameLabel.Options.builder()
-         .label(memberEnd.getName())
-         .clearCss()
-         .css(BGCoreCSS.TEXT_HIGHLIGHT)
-         .edgePlacement(new GEdgePlacementBuilder()
-            .side(labelSide)
-            .position(position)
-            .rotate(true)
-            .offset(10d)
-            .build())
-         .build();
+        return new GCNone(context, origin);
+    }
 
-      var multiplicity = GCNameLabel.Options.builder()
-         .label(MultiplicityUtil.getMultiplicity(memberEnd))
-         .clearCss()
-         .id(Optional.of(context.suffix.appendTo(PropertyMultiplicityLabelSuffix.SUFFIX, memberEndId)))
-         .type(UMLTypes.PROPERTY_MULTIPLICITY.prefix(context.representation()))
-         .edgePlacement(new GEdgePlacementBuilder()
-            .side(multiplicitySide)
-            .position(position)
-            .offset(10d)
-            .rotate(true)
-            .build())
-         .build();
+    protected List<GCProvider> createMemberEnd(final GEdge edge, final Property memberEnd, final double position,
+                                               final String labelSide, final String multiplicitySide) {
 
-      var marker = AggregationKindUtil.from(memberEnd.getAggregation());
-      edge.getCssClasses().add(position < 0.5d ? marker.start() : marker.end());
+        var memberEndId = context.idGenerator.getOrCreateId(memberEnd);
 
-      return List.of(
-         new GCNameLabel(context, memberEnd, name),
-         new GCLabel(context, memberEnd, multiplicity));
-   }
+        var name = GCNameLabel.Options.builder()
+                .label(memberEnd.getName())
+                .clearCss()
+                .css(BGCoreCSS.TEXT_HIGHLIGHT)
+                .edgePlacement(new GEdgePlacementBuilder()
+                        .side(labelSide)
+                        .position(position)
+                        .rotate(true)
+                        .offset(10d)
+                        .build())
+                .build();
+
+        var multiplicity = GCNameLabel.Options.builder()
+                .label(MultiplicityUtil.getMultiplicity(memberEnd))
+                .clearCss()
+                .id(Optional.of(context.suffix.appendTo(PropertyMultiplicityLabelSuffix.SUFFIX, memberEndId)))
+                .type(UMLTypes.PROPERTY_MULTIPLICITY.prefix(context.representation()))
+                .edgePlacement(new GEdgePlacementBuilder()
+                        .side(multiplicitySide)
+                        .position(position)
+                        .offset(10d)
+                        .rotate(true)
+                        .build())
+                .build();
+
+        var marker = AggregationKindUtil.from(memberEnd.getAggregation());
+        edge.getCssClasses().add(position < 0.5d ? marker.start() : marker.end());
+
+        return List.of(
+                new GCNameLabel(context, memberEnd, name),
+                new GCLabel(context, memberEnd, multiplicity));
+    }
 
 }

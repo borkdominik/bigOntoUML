@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.model.ModelPackage
+ * @see ModelPackage
  * @generated
  */
 public class ModelAdapterFactory extends AdapterFactoryImpl {
@@ -104,13 +104,13 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.borkdominik.big.glsp.uml.model.NewDiagramRequest <em>New Diagram Request</em>}'.
+	 * Creates a new adapter for an object of class '{@link NewDiagramRequest <em>New Diagram Request</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.borkdominik.big.glsp.uml.model.NewDiagramRequest
+	 * @see NewDiagramRequest
 	 * @generated
 	 */
 	public Adapter createNewDiagramRequestAdapter() {
@@ -118,13 +118,13 @@ public class ModelAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.borkdominik.big.glsp.uml.model.MessageAnchor <em>Message Anchor</em>}'.
+	 * Creates a new adapter for an object of class '{@link MessageAnchor <em>Message Anchor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.borkdominik.big.glsp.uml.model.MessageAnchor
+	 * @see MessageAnchor
 	 * @generated
 	 */
 	public Adapter createMessageAnchorAdapter() {

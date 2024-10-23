@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
  * <!-- begin-user-doc -->
  * The <b>Resource Factory</b> associated with the package.
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.unotation.util.UnotationResourceImpl
+ * @see UnotationResourceImpl
  * @generated
  */
 public class UnotationResourceFactoryImpl extends ResourceFactoryImpl {

@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link com.borkdominik.big.glsp.uml.model.NewDiagramRequest#getDiagramType <em>Diagram Type</em>}</li>
+ *   <li>{@link NewDiagramRequest#getDiagramType <em>Diagram Type</em>}</li>
  * </ul>
  *
- * @see com.borkdominik.big.glsp.uml.model.ModelPackage#getNewDiagramRequest()
+ * @see ModelPackage#getNewDiagramRequest()
  * @model
  * @generated
  */
@@ -35,14 +35,14 @@ public interface NewDiagramRequest extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Diagram Type</em>' attribute.
 	 * @see #setDiagramType(String)
-	 * @see com.borkdominik.big.glsp.uml.model.ModelPackage#getNewDiagramRequest_DiagramType()
+	 * @see ModelPackage#getNewDiagramRequest_DiagramType()
 	 * @model
 	 * @generated
 	 */
 	String getDiagramType();
 
 	/**
-	 * Sets the value of the '{@link com.borkdominik.big.glsp.uml.model.NewDiagramRequest#getDiagramType <em>Diagram Type</em>}' attribute.
+	 * Sets the value of the '{@link NewDiagramRequest#getDiagramType <em>Diagram Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Diagram Type</em>' attribute.

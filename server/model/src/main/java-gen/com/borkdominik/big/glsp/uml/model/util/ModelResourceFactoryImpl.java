@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
  * <!-- begin-user-doc -->
  * The <b>Resource Factory</b> associated with the package.
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.model.util.ModelResourceImpl
+ * @see ModelResourceImpl
  * @generated
  */
 public class ModelResourceFactoryImpl extends ResourceFactoryImpl {

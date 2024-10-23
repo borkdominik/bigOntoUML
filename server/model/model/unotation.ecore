@@ -6,6 +6,7 @@
   <eClassifiers xsi:type="ecore:EEnum" name="Representation">
     <eLiterals name="ACTIVITY"/>
     <eLiterals name="CLASS" value="1"/>
+    <eLiterals name="ONTO_CLASS" value="15"/>
     <eLiterals name="COMMUNICATION" value="2" literal="COMMUNICATION"/>
     <eLiterals name="COMPONENT" value="3"/>
     <eLiterals name="COMPOSITE" value="4"/>

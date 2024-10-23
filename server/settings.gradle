@@ -6,4 +6,6 @@ rootProject.name = 'com.borkdominik.big.glsp.uml'
 include 'app'
 include 'model'
 include 'platform'
+include 'model:ontouml'
+findProject(':model:ontouml')?.name = 'ontouml'
 

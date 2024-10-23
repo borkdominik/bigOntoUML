@@ -44,7 +44,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * {@link Registry EPackage.Registry} by the package
 	 * package URI value.
 	 * <p>Note: the correct way to create the package is via the static
 	 * factory method {@link #init init()}, which also performs
@@ -52,8 +52,8 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * if one already exists.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see com.borkdominik.big.glsp.uml.model.ModelPackage#eNS_URI
+	 * @see Registry
+	 * @see ModelPackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */
@@ -80,10 +80,10 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 	 * @generated
 	 */
 	public static ModelPackage init() {
-		if (isInited) return (ModelPackage)EPackage.Registry.INSTANCE.getEPackage(ModelPackage.eNS_URI);
+		if (isInited) return (ModelPackage) Registry.INSTANCE.getEPackage(ModelPackage.eNS_URI);
 
 		// Obtain or create and register package
-		Object registeredModelPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		Object registeredModelPackage = Registry.INSTANCE.get(eNS_URI);
 		ModelPackageImpl theModelPackage = registeredModelPackage instanceof ModelPackageImpl ? (ModelPackageImpl)registeredModelPackage : new ModelPackageImpl();
 
 		isInited = true;
@@ -98,7 +98,7 @@ public class ModelPackageImpl extends EPackageImpl implements ModelPackage {
 		theModelPackage.freeze();
 
 		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(ModelPackage.eNS_URI, theModelPackage);
+		Registry.INSTANCE.put(ModelPackage.eNS_URI, theModelPackage);
 		return theModelPackage;
 	}
 

@@ -18,7 +18,7 @@ import org.eclipse.glsp.server.emf.model.notation.Diagram;
  * <!-- end-user-doc -->
  *
  *
- * @see com.borkdominik.big.glsp.uml.unotation.UnotationPackage#getUMLDiagram()
+ * @see UnotationPackage#getUMLDiagram()
  * @model
  * @generated
  */

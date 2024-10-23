@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * A representation of the literals of the enumeration '<em><b>Representation</b></em>',
  * and utility methods for working with them.
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.unotation.UnotationPackage#getRepresentation()
+ * @see UnotationPackage#getRepresentation()
  * @model
  * @generated
  */
@@ -45,6 +45,16 @@ public enum Representation implements Enumerator {
 	 * @ordered
 	 */
 	CLASS(1, "CLASS", "CLASS"),
+
+	/**
+	 * The '<em><b>ONTO CLASS</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #ONTO_CLASS_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	ONTO_CLASS(15, "ONTO_CLASS", "ONTO_CLASS"),
 
 	/**
 	 * The '<em><b>COMMUNICATION</b></em>' literal object.
@@ -199,6 +209,17 @@ public enum Representation implements Enumerator {
 	public static final int CLASS_VALUE = 1;
 
 	/**
+	 * The '<em><b>ONTO CLASS</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #ONTO_CLASS
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ONTO_CLASS_VALUE = 15;
+
+	/**
 	 * The '<em><b>COMMUNICATION</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -351,6 +372,7 @@ public enum Representation implements Enumerator {
 		new Representation[] {
 			ACTIVITY,
 			CLASS,
+			ONTO_CLASS,
 			COMMUNICATION,
 			COMPONENT,
 			COMPOSITE,
@@ -422,6 +444,7 @@ public enum Representation implements Enumerator {
 		switch (value) {
 			case ACTIVITY_VALUE: return ACTIVITY;
 			case CLASS_VALUE: return CLASS;
+			case ONTO_CLASS_VALUE: return ONTO_CLASS;
 			case COMMUNICATION_VALUE: return COMMUNICATION;
 			case COMPONENT_VALUE: return COMPONENT;
 			case COMPOSITE_VALUE: return COMPOSITE;

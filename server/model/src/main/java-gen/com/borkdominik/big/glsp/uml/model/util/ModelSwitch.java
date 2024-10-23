@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.model.ModelPackage
+ * @see ModelPackage
  * @generated
  */
 public class ModelSwitch<T> extends Switch<T> {
@@ -98,7 +98,7 @@ public class ModelSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>New Diagram Request</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @see #doSwitch(EObject) doSwitch(EObject)
 	 * @generated
 	 */
 	public T caseNewDiagramRequest(NewDiagramRequest object) {
@@ -113,7 +113,7 @@ public class ModelSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Message Anchor</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @see #doSwitch(EObject) doSwitch(EObject)
 	 * @generated
 	 */
 	public T caseMessageAnchor(MessageAnchor object) {
@@ -128,7 +128,7 @@ public class ModelSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
+	 * @see #doSwitch(EObject)
 	 * @generated
 	 */
 	@Override

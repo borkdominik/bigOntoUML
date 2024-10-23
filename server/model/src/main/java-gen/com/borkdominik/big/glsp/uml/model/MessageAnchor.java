@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link com.borkdominik.big.glsp.uml.model.MessageAnchor#getId <em>Id</em>}</li>
+ *   <li>{@link MessageAnchor#getId <em>Id</em>}</li>
  * </ul>
  *
- * @see com.borkdominik.big.glsp.uml.model.ModelPackage#getMessageAnchor()
+ * @see ModelPackage#getMessageAnchor()
  * @model
  * @generated
  */
@@ -35,14 +35,14 @@ public interface MessageAnchor extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(String)
-	 * @see com.borkdominik.big.glsp.uml.model.ModelPackage#getMessageAnchor_Id()
+	 * @see ModelPackage#getMessageAnchor_Id()
 	 * @model
 	 * @generated
 	 */
 	String getId();
 
 	/**
-	 * Sets the value of the '{@link com.borkdominik.big.glsp.uml.model.MessageAnchor#getId <em>Id</em>}' attribute.
+	 * Sets the value of the '{@link MessageAnchor#getId <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Id</em>' attribute.

@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link com.borkdominik.big.glsp.uml.model.impl.NewDiagramRequestImpl#getDiagramType <em>Diagram Type</em>}</li>
+ *   <li>{@link NewDiagramRequestImpl#getDiagramType <em>Diagram Type</em>}</li>
  * </ul>
  *
  * @generated

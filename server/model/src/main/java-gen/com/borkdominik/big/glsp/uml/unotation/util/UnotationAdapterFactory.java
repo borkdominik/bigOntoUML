@@ -27,7 +27,7 @@ import org.eclipse.glsp.server.emf.model.notation.NotationElement;
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.unotation.UnotationPackage
+ * @see UnotationPackage
  * @generated
  */
 public class UnotationAdapterFactory extends AdapterFactoryImpl {
@@ -111,13 +111,13 @@ public class UnotationAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link com.borkdominik.big.glsp.uml.unotation.UMLDiagram <em>UML Diagram</em>}'.
+	 * Creates a new adapter for an object of class '{@link UMLDiagram <em>UML Diagram</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see com.borkdominik.big.glsp.uml.unotation.UMLDiagram
+	 * @see UMLDiagram
 	 * @generated
 	 */
 	public Adapter createUMLDiagramAdapter() {
@@ -125,13 +125,13 @@ public class UnotationAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.glsp.server.emf.model.notation.NotationElement <em>Element</em>}'.
+	 * Creates a new adapter for an object of class '{@link NotationElement <em>Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.glsp.server.emf.model.notation.NotationElement
+	 * @see NotationElement
 	 * @generated
 	 */
 	public Adapter createNotationElementAdapter() {
@@ -139,13 +139,13 @@ public class UnotationAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.glsp.server.emf.model.notation.Diagram <em>Diagram</em>}'.
+	 * Creates a new adapter for an object of class '{@link Diagram <em>Diagram</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.eclipse.glsp.server.emf.model.notation.Diagram
+	 * @see Diagram
 	 * @generated
 	 */
 	public Adapter createDiagramAdapter() {

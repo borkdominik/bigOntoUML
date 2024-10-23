@@ -22,7 +22,8 @@ export enum UMLDiagramType {
     STATE_MACHINE = 'STATE_MACHINE',
     TIMING = 'TIMING',
     USE_CASE = 'USE_CASE',
-    INFORMATION_FLOW = 'INFORMATION_FLOW'
+    INFORMATION_FLOW = 'INFORMATION_FLOW',
+    ONTO_CLASS = 'ONTO_CLASS'
 }
 
 export namespace UMLDiagramTypeUtil {
@@ -34,6 +35,7 @@ export namespace UMLDiagramTypeUtil {
         UMLDiagramType.INFORMATION_FLOW,
         UMLDiagramType.PACKAGE,
         UMLDiagramType.STATE_MACHINE,
+        UMLDiagramType.ONTO_CLASS,
         UMLDiagramType.USE_CASE
     ];
 

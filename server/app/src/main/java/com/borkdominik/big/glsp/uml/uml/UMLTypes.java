@@ -10,78 +10,12 @@
  ********************************************************************************/
 package com.borkdominik.big.glsp.uml.uml;
 
+import java.lang.Class;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.uml2.uml.Abstraction;
-import org.eclipse.uml2.uml.AcceptEventAction;
-import org.eclipse.uml2.uml.Activity;
-import org.eclipse.uml2.uml.ActivityFinalNode;
-import org.eclipse.uml2.uml.ActivityNode;
-import org.eclipse.uml2.uml.ActivityParameterNode;
-import org.eclipse.uml2.uml.ActivityPartition;
-import org.eclipse.uml2.uml.Actor;
-import org.eclipse.uml2.uml.Artifact;
-import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.CentralBufferNode;
-import org.eclipse.uml2.uml.CommunicationPath;
-import org.eclipse.uml2.uml.Component;
-import org.eclipse.uml2.uml.ControlFlow;
-import org.eclipse.uml2.uml.DataType;
-import org.eclipse.uml2.uml.DecisionNode;
-import org.eclipse.uml2.uml.Dependency;
-import org.eclipse.uml2.uml.Deployment;
-import org.eclipse.uml2.uml.DeploymentSpecification;
-import org.eclipse.uml2.uml.Device;
-import org.eclipse.uml2.uml.ElementImport;
-import org.eclipse.uml2.uml.Enumeration;
-import org.eclipse.uml2.uml.EnumerationLiteral;
-import org.eclipse.uml2.uml.ExecutionEnvironment;
-import org.eclipse.uml2.uml.Extend;
-import org.eclipse.uml2.uml.FinalState;
-import org.eclipse.uml2.uml.FlowFinalNode;
-import org.eclipse.uml2.uml.ForkNode;
-import org.eclipse.uml2.uml.Generalization;
-import org.eclipse.uml2.uml.Include;
-import org.eclipse.uml2.uml.InformationFlow;
-import org.eclipse.uml2.uml.InitialNode;
-import org.eclipse.uml2.uml.InputPin;
-import org.eclipse.uml2.uml.InstanceSpecification;
-import org.eclipse.uml2.uml.Interaction;
-import org.eclipse.uml2.uml.Interface;
-import org.eclipse.uml2.uml.InterfaceRealization;
-import org.eclipse.uml2.uml.JoinNode;
-import org.eclipse.uml2.uml.Lifeline;
-import org.eclipse.uml2.uml.LiteralBoolean;
-import org.eclipse.uml2.uml.LiteralInteger;
-import org.eclipse.uml2.uml.LiteralSpecification;
-import org.eclipse.uml2.uml.LiteralString;
-import org.eclipse.uml2.uml.Manifestation;
-import org.eclipse.uml2.uml.MergeNode;
-import org.eclipse.uml2.uml.Message;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.Node;
-import org.eclipse.uml2.uml.OpaqueAction;
-import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.OutputPin;
-import org.eclipse.uml2.uml.PackageImport;
-import org.eclipse.uml2.uml.PackageMerge;
-import org.eclipse.uml2.uml.Parameter;
-import org.eclipse.uml2.uml.Pin;
-import org.eclipse.uml2.uml.PrimitiveType;
-import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Pseudostate;
-import org.eclipse.uml2.uml.Realization;
-import org.eclipse.uml2.uml.Region;
-import org.eclipse.uml2.uml.SendSignalAction;
-import org.eclipse.uml2.uml.Slot;
-import org.eclipse.uml2.uml.State;
-import org.eclipse.uml2.uml.StateMachine;
-import org.eclipse.uml2.uml.Substitution;
-import org.eclipse.uml2.uml.Transition;
-import org.eclipse.uml2.uml.Usage;
-import org.eclipse.uml2.uml.UseCase;
+import org.eclipse.uml2.uml.*;
 
 import com.borkdominik.big.glsp.server.core.model.BGTypeProvider;
 
@@ -167,6 +101,7 @@ public enum UMLTypes implements BGTypeProvider {
    SUBSTITUTION(List.of(Substitution.class)),
    TRANSITION(List.of(Transition.class)),
    USAGE(List.of(Usage.class)),
+   STEREOTYPE(List.of(Stereotype.class)),
    USE_CASE(List.of(UseCase.class));
 
    private final String typeId;

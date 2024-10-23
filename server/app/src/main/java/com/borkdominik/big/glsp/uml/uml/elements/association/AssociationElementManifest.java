@@ -19,23 +19,25 @@ import com.borkdominik.big.glsp.uml.uml.UMLTypes;
 import com.borkdominik.big.glsp.uml.uml.elements.association.features.AssociationPropertyProvider;
 import com.borkdominik.big.glsp.uml.uml.elements.association.gmodel.AssociationGModelMapper;
 import com.borkdominik.big.glsp.uml.uml.elements.named_element.NamedElementPropertyProvider;
+import com.borkdominik.big.glsp.uml.uml.elements.stereotype.StereotypePropertyProvider;
 
 public class AssociationElementManifest extends BGEMFEdgeElementManifest {
-   public AssociationElementManifest(final BGRepresentationManifest manifest) {
-      super(manifest, Set.of(UMLTypes.ASSOCIATION, UMLTypes.COMPOSITION, UMLTypes.AGGREGATION));
-   }
+    public AssociationElementManifest(final BGRepresentationManifest manifest) {
+        super(manifest, Set.of(UMLTypes.ASSOCIATION, UMLTypes.COMPOSITION, UMLTypes.AGGREGATION));
+    }
 
-   @Override
-   protected void configureElement() {
-      bindGModelMapper(AssociationGModelMapper.class);
-      bindConfiguration(AssociationConfiguration.class);
-      bindCreateHandler(AssociationOperationHandler.class);
-      bindDelete(AssociationOperationHandler.class);
-      bindReconnectHandler(AssociationOperationHandler.class);
+    @Override
+    protected void configureElement() {
+        bindGModelMapper(AssociationGModelMapper.class);
+        bindConfiguration(AssociationConfiguration.class);
+        bindCreateHandler(AssociationOperationHandler.class);
+        bindDelete(AssociationOperationHandler.class);
+        bindReconnectHandler(AssociationOperationHandler.class);
 
-      bindPropertyPalette(BGPropertyPaletteContribution.Options.builder()
-         .propertyProviders(Set.of(
-            NamedElementPropertyProvider.class,
-            AssociationPropertyProvider.class)));
-   }
+        bindPropertyPalette(BGPropertyPaletteContribution.Options.builder()
+                .propertyProviders(Set.of(
+                        NamedElementPropertyProvider.class,
+                        AssociationPropertyProvider.class,
+                        StereotypePropertyProvider.class)));
+    }
 }

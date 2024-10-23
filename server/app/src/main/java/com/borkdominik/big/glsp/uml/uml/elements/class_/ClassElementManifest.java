@@ -10,12 +10,9 @@
  ********************************************************************************/
 package com.borkdominik.big.glsp.uml.uml.elements.class_;
 
-import java.util.Set;
-
 import com.borkdominik.big.glsp.server.core.manifest.BGRepresentationManifest;
 import com.borkdominik.big.glsp.server.elements.manifest.integrations.BGEMFNodeElementManifest;
 import com.borkdominik.big.glsp.server.features.property_palette.BGPropertyPaletteContribution;
-import com.borkdominik.big.glsp.server.features.property_palette.provider.BGDefaultPropertyPaletteProvider;
 import com.borkdominik.big.glsp.uml.uml.UMLTypes;
 import com.borkdominik.big.glsp.uml.uml.elements.attribute_owner.AttributeOwnerPropertyProvider;
 import com.borkdominik.big.glsp.uml.uml.elements.class_.features.ClassPropertyProvider;
@@ -24,6 +21,9 @@ import com.borkdominik.big.glsp.uml.uml.elements.classifier.ClassifierPropertyPr
 import com.borkdominik.big.glsp.uml.uml.elements.named_element.NamedElementLabelEditHandler;
 import com.borkdominik.big.glsp.uml.uml.elements.named_element.NamedElementPropertyProvider;
 import com.borkdominik.big.glsp.uml.uml.elements.operation_owner.OperationOwnerPropertyProvider;
+import com.borkdominik.big.glsp.uml.uml.elements.stereotype.StereotypePropertyProvider;
+
+import java.util.Set;
 
 public class ClassElementManifest extends BGEMFNodeElementManifest {
    public ClassElementManifest(final BGRepresentationManifest manifest) {
@@ -42,6 +42,7 @@ public class ClassElementManifest extends BGEMFNodeElementManifest {
             ClassifierPropertyProvider.class,
             ClassPropertyProvider.class,
             AttributeOwnerPropertyProvider.class,
-            OperationOwnerPropertyProvider.class)));
+            OperationOwnerPropertyProvider.class,
+            StereotypePropertyProvider.class)));
    }
 }

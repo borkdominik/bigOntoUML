@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EPackage;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.model.ModelFactory
+ * @see ModelFactory
  * @model kind="package"
  * @generated
  */
@@ -139,42 +139,42 @@ public interface ModelPackage extends EPackage {
 
 
 	/**
-	 * Returns the meta object for class '{@link com.borkdominik.big.glsp.uml.model.NewDiagramRequest <em>New Diagram Request</em>}'.
+	 * Returns the meta object for class '{@link NewDiagramRequest <em>New Diagram Request</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>New Diagram Request</em>'.
-	 * @see com.borkdominik.big.glsp.uml.model.NewDiagramRequest
+	 * @see NewDiagramRequest
 	 * @generated
 	 */
 	EClass getNewDiagramRequest();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.borkdominik.big.glsp.uml.model.NewDiagramRequest#getDiagramType <em>Diagram Type</em>}'.
+	 * Returns the meta object for the attribute '{@link NewDiagramRequest#getDiagramType <em>Diagram Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Diagram Type</em>'.
-	 * @see com.borkdominik.big.glsp.uml.model.NewDiagramRequest#getDiagramType()
+	 * @see NewDiagramRequest#getDiagramType()
 	 * @see #getNewDiagramRequest()
 	 * @generated
 	 */
 	EAttribute getNewDiagramRequest_DiagramType();
 
 	/**
-	 * Returns the meta object for class '{@link com.borkdominik.big.glsp.uml.model.MessageAnchor <em>Message Anchor</em>}'.
+	 * Returns the meta object for class '{@link MessageAnchor <em>Message Anchor</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Message Anchor</em>'.
-	 * @see com.borkdominik.big.glsp.uml.model.MessageAnchor
+	 * @see MessageAnchor
 	 * @generated
 	 */
 	EClass getMessageAnchor();
 
 	/**
-	 * Returns the meta object for the attribute '{@link com.borkdominik.big.glsp.uml.model.MessageAnchor#getId <em>Id</em>}'.
+	 * Returns the meta object for the attribute '{@link MessageAnchor#getId <em>Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Id</em>'.
-	 * @see com.borkdominik.big.glsp.uml.model.MessageAnchor#getId()
+	 * @see MessageAnchor#getId()
 	 * @see #getMessageAnchor()
 	 * @generated
 	 */

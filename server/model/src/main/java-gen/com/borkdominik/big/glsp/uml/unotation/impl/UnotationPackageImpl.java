@@ -48,7 +48,7 @@ public class UnotationPackageImpl extends EPackageImpl implements UnotationPacka
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * {@link Registry EPackage.Registry} by the package
 	 * package URI value.
 	 * <p>Note: the correct way to create the package is via the static
 	 * factory method {@link #init init()}, which also performs
@@ -56,8 +56,8 @@ public class UnotationPackageImpl extends EPackageImpl implements UnotationPacka
 	 * if one already exists.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.EPackage.Registry
-	 * @see com.borkdominik.big.glsp.uml.unotation.UnotationPackage#eNS_URI
+	 * @see Registry
+	 * @see UnotationPackage#eNS_URI
 	 * @see #init()
 	 * @generated
 	 */
@@ -84,10 +84,10 @@ public class UnotationPackageImpl extends EPackageImpl implements UnotationPacka
 	 * @generated
 	 */
 	public static UnotationPackage init() {
-		if (isInited) return (UnotationPackage)EPackage.Registry.INSTANCE.getEPackage(UnotationPackage.eNS_URI);
+		if (isInited) return (UnotationPackage) Registry.INSTANCE.getEPackage(UnotationPackage.eNS_URI);
 
 		// Obtain or create and register package
-		Object registeredUnotationPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		Object registeredUnotationPackage = Registry.INSTANCE.get(eNS_URI);
 		UnotationPackageImpl theUnotationPackage = registeredUnotationPackage instanceof UnotationPackageImpl ? (UnotationPackageImpl)registeredUnotationPackage : new UnotationPackageImpl();
 
 		isInited = true;
@@ -106,7 +106,7 @@ public class UnotationPackageImpl extends EPackageImpl implements UnotationPacka
 		theUnotationPackage.freeze();
 
 		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(UnotationPackage.eNS_URI, theUnotationPackage);
+		Registry.INSTANCE.put(UnotationPackage.eNS_URI, theUnotationPackage);
 		return theUnotationPackage;
 	}
 
@@ -189,7 +189,7 @@ public class UnotationPackageImpl extends EPackageImpl implements UnotationPacka
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		NotationPackage theNotationPackage = (NotationPackage)EPackage.Registry.INSTANCE.getEPackage(NotationPackage.eNS_URI);
+		NotationPackage theNotationPackage = (NotationPackage) Registry.INSTANCE.getEPackage(NotationPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -205,6 +205,7 @@ public class UnotationPackageImpl extends EPackageImpl implements UnotationPacka
 		initEEnum(representationEEnum, Representation.class, "Representation");
 		addEEnumLiteral(representationEEnum, Representation.ACTIVITY);
 		addEEnumLiteral(representationEEnum, Representation.CLASS);
+		addEEnumLiteral(representationEEnum, Representation.ONTO_CLASS);
 		addEEnumLiteral(representationEEnum, Representation.COMMUNICATION);
 		addEEnumLiteral(representationEEnum, Representation.COMPONENT);
 		addEEnumLiteral(representationEEnum, Representation.COMPOSITE);

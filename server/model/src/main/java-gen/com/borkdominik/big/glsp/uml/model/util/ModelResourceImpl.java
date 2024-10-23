@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
  * <!-- begin-user-doc -->
  * The <b>Resource </b> associated with the package.
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.model.util.ModelResourceFactoryImpl
+ * @see ModelResourceFactoryImpl
  * @generated
  */
 public class ModelResourceImpl extends XMIResourceImpl {

@@ -15,6 +15,7 @@
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="unotation.ecore#//Representation">
       <genEnumLiterals ecoreEnumLiteral="unotation.ecore#//Representation/ACTIVITY"/>
       <genEnumLiterals ecoreEnumLiteral="unotation.ecore#//Representation/CLASS"/>
+      <genEnumLiterals ecoreEnumLiteral="unotation.ecore#//Representation/ONTO_CLASS"/>
       <genEnumLiterals ecoreEnumLiteral="unotation.ecore#//Representation/COMMUNICATION"/>
       <genEnumLiterals ecoreEnumLiteral="unotation.ecore#//Representation/COMPONENT"/>
       <genEnumLiterals ecoreEnumLiteral="unotation.ecore#//Representation/COMPOSITE"/>

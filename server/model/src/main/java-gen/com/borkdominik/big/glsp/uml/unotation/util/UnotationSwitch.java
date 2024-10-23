@@ -30,7 +30,7 @@ import org.eclipse.glsp.server.emf.model.notation.NotationElement;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.unotation.UnotationPackage
+ * @see UnotationPackage
  * @generated
  */
 public class UnotationSwitch<T> extends Switch<T> {
@@ -97,7 +97,7 @@ public class UnotationSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>UML Diagram</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @see #doSwitch(EObject) doSwitch(EObject)
 	 * @generated
 	 */
 	public T caseUMLDiagram(UMLDiagram object) {
@@ -112,7 +112,7 @@ public class UnotationSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Element</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @see #doSwitch(EObject) doSwitch(EObject)
 	 * @generated
 	 */
 	public T caseNotationElement(NotationElement object) {
@@ -127,7 +127,7 @@ public class UnotationSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Diagram</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @see #doSwitch(EObject) doSwitch(EObject)
 	 * @generated
 	 */
 	public T caseDiagram(Diagram object) {
@@ -142,7 +142,7 @@ public class UnotationSwitch<T> extends Switch<T> {
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
+	 * @see #doSwitch(EObject)
 	 * @generated
 	 */
 	@Override

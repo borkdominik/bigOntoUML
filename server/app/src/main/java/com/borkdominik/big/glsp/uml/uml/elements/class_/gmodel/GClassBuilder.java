@@ -12,6 +12,7 @@ package com.borkdominik.big.glsp.uml.uml.elements.class_.gmodel;
 
 import java.util.List;
 
+import com.borkdominik.big.glsp.server.core.constants.BGQuotationMark;
 import org.eclipse.glsp.graph.GNode;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Classifier;
@@ -28,44 +29,47 @@ import com.borkdominik.big.glsp.uml.uml.elements.operation_owner.GCOperationOwne
 
 public class GClassBuilder<TOrigin extends Class> extends GCNodeBuilder<TOrigin> {
 
-   protected final GCOperationOwner<TOrigin> operationOwner;
-   protected final GCAttributeOwner<TOrigin> attributeOwner;
+    protected final GCOperationOwner<TOrigin> operationOwner;
+    protected final GCAttributeOwner<TOrigin> attributeOwner;
 
-   public List<Classifier> nestedClassifiers() {
-      return this.origin.getNestedClassifiers();
-   }
+    public List<Classifier> nestedClassifiers() {
+        return this.origin.getNestedClassifiers();
+    }
 
-   public GClassBuilder(final GCModelContext context, final TOrigin source, final String type) {
-      super(context, source, type);
-      this.operationOwner = new GCOperationOwner<>(context, source);
-      this.attributeOwner = new GCAttributeOwner<>(context, source);
-   }
+    public GClassBuilder(final GCModelContext context, final TOrigin source, final String type) {
+        super(context, source, type);
+        this.operationOwner = new GCOperationOwner<>(context, source);
+        this.attributeOwner = new GCAttributeOwner<>(context, source);
+    }
 
-   @Override
-   protected List<GCProvider> createComponentChildren(final GNode modelRoot, final GCModelList<?, ?> componentRoot) {
-      return List.of(createHeader(componentRoot), createClassBody(componentRoot));
-   }
+    @Override
+    protected List<GCProvider> createComponentChildren(final GNode modelRoot, final GCModelList<?, ?> componentRoot) {
+        return List.of(createHeader(componentRoot), createClassBody(componentRoot));
+    }
 
-   protected GCProvider createHeader(final GCModelList<?, ?> root) {
-      var namedElementOptions = GCNamedElement.Options.builder()
-         .container(root);
+    protected GCProvider createHeader(final GCModelList<?, ?> root) {
+        var namedElementOptions = GCNamedElement.Options.builder()
+                .container(root);
 
-      if (origin.isAbstract()) {
-         namedElementOptions.nameCss(BGCoreCSS.FONT_ITALIC);
-      }
+        origin.getAppliedStereotypes().forEach(stereotype ->
+                namedElementOptions.prefix(BGQuotationMark.quoteDoubleAngle(stereotype.getName())));
 
-      return new GCNamedElement<>(context, origin, namedElementOptions.build());
-   }
+        if (origin.isAbstract()) {
+            namedElementOptions.nameCss(BGCoreCSS.FONT_ITALIC);
+        }
 
-   protected GCProvider createClassBody(final GCModelList<?, ?> root) {
-      var options = GCList.Options.builder()
-         .dividerBeforeInserts(true)
-         .build();
-      var list = new GCList(context, origin, options);
+        return new GCNamedElement<>(context, origin, namedElementOptions.build());
+    }
 
-      list.add(attributeOwner);
-      list.add(operationOwner);
+    protected GCProvider createClassBody(final GCModelList<?, ?> root) {
+        var options = GCList.Options.builder()
+                .dividerBeforeInserts(true)
+                .build();
+        var list = new GCList(context, origin, options);
 
-      return list;
-   }
+        list.add(attributeOwner);
+        list.add(operationOwner);
+
+        return list;
+    }
 }

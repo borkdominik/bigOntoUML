@@ -28,7 +28,7 @@ import org.eclipse.glsp.server.emf.model.notation.NotationPackage;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * @see com.borkdominik.big.glsp.uml.unotation.UnotationFactory
+ * @see UnotationFactory
  * @model kind="package"
  * @generated
  */
@@ -130,10 +130,10 @@ public interface UnotationPackage extends EPackage {
 	int UML_DIAGRAM_OPERATION_COUNT = NotationPackage.DIAGRAM_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link com.borkdominik.big.glsp.uml.unotation.Representation <em>Representation</em>}' enum.
+	 * The meta object id for the '{@link Representation <em>Representation</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see com.borkdominik.big.glsp.uml.unotation.Representation
+	 * @see Representation
 	 * @see com.borkdominik.big.glsp.uml.unotation.impl.UnotationPackageImpl#getRepresentation()
 	 * @generated
 	 */
@@ -141,21 +141,21 @@ public interface UnotationPackage extends EPackage {
 
 
 	/**
-	 * Returns the meta object for class '{@link com.borkdominik.big.glsp.uml.unotation.UMLDiagram <em>UML Diagram</em>}'.
+	 * Returns the meta object for class '{@link UMLDiagram <em>UML Diagram</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>UML Diagram</em>'.
-	 * @see com.borkdominik.big.glsp.uml.unotation.UMLDiagram
+	 * @see UMLDiagram
 	 * @generated
 	 */
 	EClass getUMLDiagram();
 
 	/**
-	 * Returns the meta object for enum '{@link com.borkdominik.big.glsp.uml.unotation.Representation <em>Representation</em>}'.
+	 * Returns the meta object for enum '{@link Representation <em>Representation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for enum '<em>Representation</em>'.
-	 * @see com.borkdominik.big.glsp.uml.unotation.Representation
+	 * @see Representation
 	 * @generated
 	 */
 	EEnum getRepresentation();
@@ -194,10 +194,10 @@ public interface UnotationPackage extends EPackage {
 		EClass UML_DIAGRAM = eINSTANCE.getUMLDiagram();
 
 		/**
-		 * The meta object literal for the '{@link com.borkdominik.big.glsp.uml.unotation.Representation <em>Representation</em>}' enum.
+		 * The meta object literal for the '{@link Representation <em>Representation</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see com.borkdominik.big.glsp.uml.unotation.Representation
+		 * @see Representation
 		 * @see com.borkdominik.big.glsp.uml.unotation.impl.UnotationPackageImpl#getRepresentation()
 		 * @generated
 		 */
