@@ -22,15 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.Enumerator;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.*;
-import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.resource.UMLResource;
 
 import java.util.List;
 import java.util.Set;
@@ -64,12 +56,10 @@ public class StereotypePropertyProvider extends BGEMFElementPropertyProvider<Cla
         var argument = UMLUpdateElementCommand.Argument
                 .<Element>updateElementArgumentBuilder()
                 .consumer(e -> {
-                    switch (action.getPropertyId()) {
-                        case STEREOTYPE:
-                            ((Type) e).getPackage().applyProfile((Profile) UMLSourceModelStorage.metaModel);
-                            e.getAppliedStereotypes().forEach(e::unapplyStereotype);
-                            e.applyStereotype(getStereotype(value));
-                            break;
+                    if (action.getPropertyId().equals(STEREOTYPE)) {
+                        ((Type) e).getPackage().applyProfile((Profile) UMLSourceModelStorage.metaModel);
+                        e.getAppliedStereotypes().forEach(e::unapplyStereotype);
+                        e.applyStereotype(getStereotype(value));
                     }
                 })
                 .build();

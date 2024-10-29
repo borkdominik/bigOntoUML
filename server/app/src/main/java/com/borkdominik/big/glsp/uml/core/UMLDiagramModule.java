@@ -10,6 +10,8 @@
  ********************************************************************************/
 package com.borkdominik.big.glsp.uml.core;
 
+import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.CustomModelValidator;
+import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.ModelValidationHandler;
 import org.eclipse.glsp.server.features.core.model.GModelFactory;
 
 import com.borkdominik.big.glsp.server.core.BGEMFDiagramModule;
@@ -18,6 +20,8 @@ import com.borkdominik.big.glsp.server.core.model.integrations.BGEMFSourceModelS
 import com.borkdominik.big.glsp.uml.core.gmodel.UMLGModelFactory;
 import com.borkdominik.big.glsp.uml.core.model.UMLModelRepresentation;
 import com.borkdominik.big.glsp.uml.core.model.UMLSourceModelStorage;
+import org.eclipse.glsp.server.features.validation.ModelValidator;
+import org.eclipse.glsp.server.features.validation.RequestMarkersHandler;
 
 public class UMLDiagramModule extends BGEMFDiagramModule {
 
@@ -35,6 +39,21 @@ public class UMLDiagramModule extends BGEMFDiagramModule {
    protected Class<? extends BGEMFSourceModelStorage> bindSourceModelStorage() {
       return UMLSourceModelStorage.class;
    }
+
+
+   @Override
+   protected void configure() {
+      super.configure();
+
+      // Bind custom RequestMarkersHandler
+      bind(RequestMarkersHandler.class).to(ModelValidationHandler.class);
+   }
+
+   @Override
+   protected Class<? extends ModelValidator> bindModelValidator() {
+      return CustomModelValidator.class;
+   }
+
 
    @Override
    public String getDiagramType() {
