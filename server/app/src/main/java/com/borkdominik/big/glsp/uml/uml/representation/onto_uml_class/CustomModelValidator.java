@@ -2,7 +2,6 @@ package com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class;
 
 import com.borkdominik.big.glsp.server.core.model.BGEMFModelState;
 import com.google.inject.Inject;
-import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.glsp.graph.GEdge;
 import org.eclipse.glsp.graph.GModelElement;
 import org.eclipse.glsp.graph.GNode;
@@ -68,6 +67,11 @@ public class CustomModelValidator implements ModelValidator {
         evaluateMixinClass(element, _class, markers, stereotype);
         evaluateCategory(element, _class, markers, stereotype);
         evaluateMixin(element, _class, markers, stereotype);
+        evaluateRelatorMediation(element, _class, markers, stereotype);
+        evaluateRoleMediation(element, _class, markers, stereotype);
+        evaluateRoleMixinMediation(element, _class, markers, stereotype);
+        evaluateModeCharacterization(element, _class, markers, stereotype);
+        evaluateMaterialAssociationDerivation(element, _class, markers, stereotype);
     }
 
     private void validateGeneralisation(GNode element, Generalization generalization, ArrayList<Marker> markers) {
@@ -136,9 +140,94 @@ public class CustomModelValidator implements ModelValidator {
         }
     }
 
+    private void evaluateRelatorMediation(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
+        if (hasParentStereotype(stereotype, "Relator")) {
+            if (!hasAssociationWithStereotype(_class, "OntoUML::Mediation")) {
+                markers.add(new Marker("Stereotype", "A Relator must be connected (directly or indirectly) to a Mediation", element.getId(),
+                        MarkerKind.WARNING));
+            }
+            else if(countLowerAssociationWithStereotype(_class, "OntoUML::Mediation")<2){
+                markers.add(new Marker("Stereotype", "The sum of the minimum cardinalities of the mediated ends must be greater or equal to 2", element.getId(),
+                        MarkerKind.WARNING));
+            }
+        }
+    }
+
+    private void evaluateRoleMediation(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
+        if (hasParentStereotype(stereotype, "Role")) {
+            if (!hasAssociationWithStereotype(_class, "OntoUML::Mediation")) {
+                markers.add(new Marker("Stereotype", "A Role must be connected (directly or indirectly) to a Mediation", element.getId(),
+                        MarkerKind.WARNING));
+            }
+        }
+    }
+
+    private void evaluateRoleMixinMediation(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
+        if (hasParentStereotype(stereotype, "RoleMixin")) {
+            if (!hasAssociationWithStereotype(_class, "OntoUML::Mediation")) {
+                markers.add(new Marker("Stereotype", "A RoleMixin must be connected (directly or indirectly) to a Mediation", element.getId(),
+                        MarkerKind.WARNING));
+            }
+        }
+    }
+
+    private void evaluateModeCharacterization(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
+        if (hasParentStereotype(stereotype, "Mode")) {
+            if (!hasAssociationWithStereotype(_class, "OntoUML::Characterization")) {
+                markers.add(new Marker("Stereotype", "A Mode must be connected (directly or indirectly) to a Characterization", element.getId(),
+                        MarkerKind.WARNING));
+            }
+        }
+    }
+
+    private void evaluateMaterialAssociationDerivation(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
+        if (hasParentStereotype(stereotype, "MaterialAssociation")) {
+            if (countAssociationWithStereotype(_class,"Derivation")!=1) {
+                markers.add(new Marker("Stereotype", "Every Material Association must be connected to exactly one Derivation", element.getId(),
+                        MarkerKind.WARNING));
+            }
+        }
+    }
+
+    private boolean hasAssociationWithStereotype(Classifier _class, String qualifiedName) {
+        var hasStereotype = _class.getAssociations().stream().filter(association -> association.getAppliedStereotype(qualifiedName) != null).findFirst();
+        if (hasStereotype.isPresent())
+            return true;
+        var generalisation = _class.getGeneralizations();
+        if (!generalisation.isEmpty()) {
+            var general = generalisation.get(0).getGeneral();
+            return hasAssociationWithStereotype(general, qualifiedName);
+        }
+        return false;
+    }
+
+    private int countLowerAssociationWithStereotype(Classifier _class, String qualifiedName) {
+        var lowerCount = _class.getAssociations().stream().filter(association -> association.getAppliedStereotype(qualifiedName) != null)
+                .map(association -> association.getMemberEnds().get(0).getLower()).reduce(Integer::sum).orElse(0);
+        var generalisation = _class.getGeneralizations();
+        var count = 0;
+        if (!generalisation.isEmpty()) {
+            var general = generalisation.get(0).getGeneral();
+            count += countLowerAssociationWithStereotype(general, qualifiedName);
+        }
+        return count + lowerCount;
+    }
+
+    private long countAssociationWithStereotype(Classifier _class, String qualifiedName) {
+        var associations = _class.getAssociations().stream().filter(association -> association.getAppliedStereotype(qualifiedName) != null);
+        var generalisation = _class.getGeneralizations();
+        var count = 0;
+        if (!generalisation.isEmpty()) {
+            var general = generalisation.get(0).getGeneral();
+            count += countLowerAssociationWithStereotype(general, qualifiedName);
+        }
+        return count + associations.count();
+    }
+
+
     private void validateAssociation(GEdge element, Association association, ArrayList<Marker> markers) {
         if (association.getAppliedStereotypes().isEmpty()) {
-            markers.add(new Marker("Stereotype", "This class has no Stereotype", element.getId(),
+            markers.add(new Marker("Stereotype", "This Association has no Stereotype", element.getId(),
                     MarkerKind.WARNING));
             return;
         }
@@ -150,35 +239,47 @@ public class CustomModelValidator implements ModelValidator {
                 addMarker(element, markers, "The source end minimum cardinality must be greater of equal to 1.");
             }
         }
-        if (hasParentStereotype(stereotype, "Characterization")) {
-            var modeEndStereotype = association.getMemberEnds().get(0).getAppliedStereotypes().stream().findFirst();
-            if (modeEndStereotype.isEmpty() || hasParentStereotype(modeEndStereotype.get(), "Mode")) {
-                addMarker(element, markers, "(Characterization) The source must be a Mode");
-            }
-            if (association.getMemberEnds().get(1).getLower() != 1 ||association.getMemberEnds().get(1).getUpper() != 1) {
-                addMarker(element, markers, "The Characterized end cardinality is exactly one.");
-            }
-        }
-        if (hasParentStereotype(stereotype, "Mediation")) {
-            var mediationEndStereotype = association.getMemberEnds().get(0).getAppliedStereotypes().stream().findFirst();
-            if (mediationEndStereotype.isEmpty() || hasParentStereotype(mediationEndStereotype.get(), "Relator")) {
-                addMarker(element, markers, "(Mediation) The source must be a Relator");
-            }
-            if (association.getMemberEnds().get(1).getLower() < 1) {
-                addMarker(element, markers, "The Mediated end minimum cardinality must be greater or equal to 1");
-            }
-        }
+        validateCharacterization(element, association, markers, stereotype);
+        validateMediation(element, association, markers, stereotype);
+        validateDerivation(element, association, markers, stereotype);
+    }
+
+    private void validateDerivation(GEdge element, Association association, ArrayList<Marker> markers, Stereotype stereotype) {
         if (hasParentStereotype(stereotype, "Derivation")) {
-            var derivationSourceStereotype = association.getMemberEnds().get(0).getAppliedStereotypes().stream().findFirst();
-            var derivationTargetStereotype = association.getMemberEnds().get(1).getAppliedStereotypes().stream().findFirst();
+            var derivationSourceStereotype = association.getMemberEnds().get(1).getType().getAppliedStereotypes().stream().findFirst();
+            var derivationTargetStereotype = association.getMemberEnds().get(0).getType().getAppliedStereotypes().stream().findFirst();
             if (derivationSourceStereotype.isEmpty() || hasParentStereotype(derivationSourceStereotype.get(), "MaterialAssociation")) {
                 addMarker(element, markers, "(Derivation) The source must be a Material Association");
             }
             if (derivationTargetStereotype.isEmpty() || hasParentStereotype(derivationTargetStereotype.get(), "Relator")) {
                 addMarker(element, markers, "(Derivation) The target must be a Relator");
             }
-            if (association.getMemberEnds().get(1).getLower() != 1 ||association.getMemberEnds().get(1).getUpper() != 1) {
+            if (association.getMemberEnds().get(0).getLower() != 1 || association.getMemberEnds().get(0).getUpper() != 1) {
                 addMarker(element, markers, "The Relator end cardinality is exactly one");
+            }
+        }
+    }
+
+    private void validateMediation(GEdge element, Association association, ArrayList<Marker> markers, Stereotype stereotype) {
+        if (hasParentStereotype(stereotype, "Mediation")) {
+            var mediationEndStereotype = association.getMemberEnds().get(1).getType().getAppliedStereotypes().stream().findFirst();
+            if (mediationEndStereotype.isEmpty() || !hasParentStereotype(mediationEndStereotype.get(), "Relator")) {
+                addMarker(element, markers, "(Mediation) The source must be a Relator");
+            }
+            if (association.getMemberEnds().get(1).getLower() < 1) {
+                addMarker(element, markers, "The Mediated end minimum cardinality must be greater or equal to 1");
+            }
+        }
+    }
+
+    private void validateCharacterization(GEdge element, Association association, ArrayList<Marker> markers, Stereotype stereotype) {
+        if (hasParentStereotype(stereotype, "Characterization")) {
+            var modeEndStereotype = association.getMemberEnds().get(1).getType().getAppliedStereotypes().stream().findFirst();
+            if (modeEndStereotype.isEmpty() || hasParentStereotype(modeEndStereotype.get(), "Mode")) {
+                addMarker(element, markers, "(Characterization) The source must be a Mode");
+            }
+            if (association.getMemberEnds().get(0).getLower() != 1 || association.getMemberEnds().get(0).getUpper() != 1) {
+                addMarker(element, markers, "The Characterized end cardinality is exactly one.");
             }
         }
     }
@@ -205,7 +306,10 @@ public class CustomModelValidator implements ModelValidator {
             if (stereotype.isEmpty())
                 return 0;
 
-            if (hasParentStereotype(general.get().getAppliedStereotypes().get(0), name)) {
+            var generalStereotypes = general.get().getAppliedStereotypes();
+            if (generalStereotypes.isEmpty())
+                return 0;
+            if (hasParentStereotype(generalStereotypes.get(0), name)) {
                 return 1 + countAncestorsWithStereotype(general.get(), name);
             }
             return countAncestorsWithStereotype(general.get(), name);
