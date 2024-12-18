@@ -76,7 +76,7 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
 
         profile.define();
 
-        this.metaModel = profile;
+        UMLSourceModelStorage.metaModel = profile;
     }
 
     @Override

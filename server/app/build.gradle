@@ -17,6 +17,7 @@ p2deps {
         install('org.eclipse.uml2.uml')
         install('org.eclipse.uml2.uml.profile.standard')
         install('org.eclipse.uml2.uml.resources')
+        install('org.eclipse.ocl.uml')
     }
 }
 
