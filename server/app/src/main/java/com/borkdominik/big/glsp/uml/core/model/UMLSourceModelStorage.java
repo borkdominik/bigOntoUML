@@ -23,9 +23,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.glsp.server.actions.SaveModelAction;
 import org.eclipse.glsp.server.emf.EMFIdGenerator;
 import org.eclipse.glsp.server.emf.model.notation.NotationFactory;
-import org.eclipse.glsp.server.features.core.model.RequestModelAction;
 import org.eclipse.glsp.server.types.GLSPServerException;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Profile;
@@ -35,14 +35,12 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
 
     @Inject
     protected EMFIdGenerator idGenerator;
-
-    public static EObject metaModel; //TODO: lol fix this
-
 
     private static final ResourceSet RESOURCE_SET;
 
@@ -66,17 +64,6 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
         resourceSet.getPackageRegistry().put(UMLPackage.eINSTANCE.getNsURI(), UMLPackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(UnotationPackage.eINSTANCE.getNsURI(), UnotationPackage.eINSTANCE);
         return resourceSet;
-    }
-
-    @Override
-    public void loadSourceModel(final RequestModelAction action) {
-        super.loadSourceModel(action);
-
-        var profile = loadOntoUmlProfile();
-
-        profile.define();
-
-        UMLSourceModelStorage.metaModel = profile;
     }
 
     @Override
@@ -112,14 +99,21 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
         diagram.setSemanticElement(semanticProxy);
         diagram.setDiagramType(action.getDiagramType());
 
-        var profile = loadOntoUmlProfile();
+        model.setName("BigOntoUml");
 
+
+        var profile = loadOntoUmlProfile();
+        profile.define();
+
+        umlResource.getContents().add(profile);
+        model.getPackagedElements().add(profile);
         referenceMetaclass(profile, UMLPackage.Literals.PROPERTY.getName());
 
-        profile.define();
         model.applyProfile(profile);
+
         try {
             unotationResource.save(null);
+            umlResource.save(null);
         } catch (IOException e) {
             throw new GLSPServerException("Failed to save file", e);
         }
@@ -166,5 +160,18 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
         }
 
         return super.doCreateResourceContent(ePackage);
+    }
+
+    @Override
+    public void saveSourceModel(final SaveModelAction action) {
+        for (Resource resource : modelState.getResourceSet().getResources()) {
+            if (resource.getURI() != null && resource.getURI().isFile()) {
+                try {
+                    resource.save(Collections.EMPTY_MAP);
+                } catch (IOException e) {
+                    throw new GLSPServerException("Could not save model to file: " + resource.getURI(), e);
+                }
+            }
+        }
     }
 }

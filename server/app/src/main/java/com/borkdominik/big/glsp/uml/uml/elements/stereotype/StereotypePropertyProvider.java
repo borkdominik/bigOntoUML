@@ -39,14 +39,13 @@ public class StereotypePropertyProvider extends BGEMFElementPropertyProvider<Cla
 
     @Override
     public List<ElementPropertyItem> doProvide(final Classifier element) {
-        element.getPackage().applyProfile((Profile) UMLSourceModelStorage.metaModel);
         var options = element.getApplicableStereotypes().stream()
-                .map(stereotype -> ElementChoicePropertyItem.Choice.builder().value(stereotype.getName()).label(stereotype.getName()).build())
+                .map(stereotype -> ElementChoicePropertyItem.Choice.builder().value(stereotype.getQualifiedName()).label(stereotype.getName()).build())
                 .toList();
 
         var elementId = providerContext.idGenerator().getOrCreateId(element);
         var builder = new ElementPropertyBuilder(elementId)
-                .choice(STEREOTYPE, "Stereotype", options, element.getAppliedStereotypes().stream().findFirst().map(Stereotype::getName).orElse(""));
+                .choice(STEREOTYPE, "Stereotype", options, element.getAppliedStereotypes().stream().findFirst().map(Stereotype::getQualifiedName).orElse(""));
         return builder.items();
     }
 
@@ -57,21 +56,12 @@ public class StereotypePropertyProvider extends BGEMFElementPropertyProvider<Cla
                 .<Element>updateElementArgumentBuilder()
                 .consumer(e -> {
                     if (action.getPropertyId().equals(STEREOTYPE)) {
-                        ((Type) e).getPackage().applyProfile((Profile) UMLSourceModelStorage.metaModel);
                         e.getAppliedStereotypes().forEach(e::unapplyStereotype);
-                        e.applyStereotype(getStereotype(value));
+                        e.applyStereotype(e.getApplicableStereotype(value));
                     }
                 })
                 .build();
 
         return new UMLUpdateElementCommand<>(context, modelState.getSemanticModel(), element, argument);
     }
-
-    private Stereotype getStereotype(String name) {
-        return ((Profile) UMLSourceModelStorage.metaModel).getPackagedElements().stream()
-                .filter(packageableElement -> packageableElement.getName().equals(name))
-                .findFirst().map(packageableElement -> (Stereotype) packageableElement)
-                .get();
-    }
-
 }
