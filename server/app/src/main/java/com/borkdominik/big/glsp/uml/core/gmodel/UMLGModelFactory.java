@@ -11,17 +11,20 @@
 package com.borkdominik.big.glsp.uml.core.gmodel;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.Model;
 
 import com.borkdominik.big.glsp.server.core.gmodel.BGEMFGModelFactory;
+import org.eclipse.uml2.uml.internal.impl.ProfileImpl;
 
 public class UMLGModelFactory extends BGEMFGModelFactory {
-   @Override
-   protected Collection<? extends EObject> childrenOf(final EObject semanticModel) {
-      var model = (Model) semanticModel;
-      return model.getPackagedElements();
-   }
+    @Override
+    protected Collection<? extends EObject> childrenOf(final EObject semanticModel) {
+        var model = (Model) semanticModel;
+        return model.getPackagedElements().stream()
+                .filter(packageableElement -> !(packageableElement instanceof ProfileImpl)).collect(Collectors.toList());
+    }
 
 }

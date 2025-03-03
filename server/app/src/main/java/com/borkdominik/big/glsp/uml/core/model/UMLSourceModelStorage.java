@@ -26,7 +26,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.glsp.server.actions.SaveModelAction;
 import org.eclipse.glsp.server.emf.EMFIdGenerator;
 import org.eclipse.glsp.server.emf.model.notation.NotationFactory;
+import org.eclipse.glsp.server.features.core.model.RequestModelAction;
 import org.eclipse.glsp.server.types.GLSPServerException;
+import org.eclipse.glsp.server.utils.ClientOptionsUtil;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.UMLFactory;
@@ -58,12 +60,39 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
         UMLResourcesUtil.init(RESOURCE_SET);
 
     }
+
     @Override
     protected ResourceSet setupResourceSet(final ResourceSet resourceSet) {
         super.setupResourceSet(resourceSet);
         resourceSet.getPackageRegistry().put(UMLPackage.eINSTANCE.getNsURI(), UMLPackage.eINSTANCE);
         resourceSet.getPackageRegistry().put(UnotationPackage.eINSTANCE.getNsURI(), UnotationPackage.eINSTANCE);
         return resourceSet;
+    }
+
+    @Override
+    public void loadSourceModel(final RequestModelAction action) {
+
+        var profile = loadOntoUmlProfile();
+        this.getOrCreateEditingDomain().getResourceSet()
+                .getPackageRegistry().put("https://www.vorstieg.eu/ontouml.uml", profile.getEAnnotations().get(0).getContents().get(0));
+
+        var sourceURI = ClientOptionsUtil.getSourceUri(action.getOptions())
+                .orElseThrow(() -> new GLSPServerException("No source URI given to load model!"));
+        // FIX: Handle the source URI correctly
+        var resourceURI = URI.createURI(sourceURI);
+
+        var editingDomain = getOrCreateEditingDomain();
+
+        Resource resource = editingDomain.getResourceSet().getResource(resourceURI, true);
+        if (resource == null) {
+            throw new GLSPServerException("Failed to load resource: " + resourceURI);
+        }
+
+        var model = resource.getContents().stream().filter(m -> m instanceof Model).map(m -> (Model) m).findFirst().get();
+
+        this.modelState.setSemanticModel(model);
+        loadNotationModel(editingDomain.getResourceSet(), resourceURI, action);
+
     }
 
     @Override
@@ -101,13 +130,8 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
 
         model.setName("BigOntoUml");
 
-
         var profile = loadOntoUmlProfile();
-        profile.define();
-
-        umlResource.getContents().add(profile);
         model.getPackagedElements().add(profile);
-        referenceMetaclass(profile, UMLPackage.Literals.PROPERTY.getName());
 
         model.applyProfile(profile);
 
@@ -120,35 +144,10 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
     }
 
     private Profile loadOntoUmlProfile() {
-        return (Profile) this.loadResource(
+
+        return (Profile)this.loadResource(
                         this.getOrCreateEditingDomain().getResourceSet(),
-                        URI.createURI("/home/benjamin/projects/bigOntoUML/server/model/ontouml/OntoUML.uml"))
-                .get();
-    }
-
-    org.eclipse.uml2.uml.Class referenceMetaclass(
-            Profile profile, String name) {
-
-        Model umlMetamodel = (Model) load(URI
-                .createURI(UMLResource.UML_METAMODEL_URI));
-
-        org.eclipse.uml2.uml.Class metaclass = (org.eclipse.uml2.uml.Class) umlMetamodel
-                .getOwnedType(name);
-
-        profile.createMetaclassReference(metaclass);
-
-        return metaclass;
-    }
-
-    org.eclipse.uml2.uml.Package load(URI uri) {
-
-            // Load the requested resource
-            Resource resource = RESOURCE_SET.getResource(uri, true);
-
-            // Get the first (should be only) package from it
-            return (org.eclipse.uml2.uml.Package) EcoreUtil
-                    .getObjectByType(resource.getContents(),
-                            UMLPackage.Literals.PACKAGE);
+                        URI.createURI("/home/benjamin/projects/bigOntoUML/server/model/ontouml/OntoUML.uml")).get();
     }
 
     @Override
