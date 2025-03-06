@@ -153,6 +153,7 @@ public class GAssociationBuilder<TOrigin extends Association> extends GCEdgeBuil
 
         var marker = AggregationKindUtil.from(memberEnd.getAggregation());
         edge.getCssClasses().add(position < 0.5d ? marker.start() : marker.end());
+        edge.getCssClasses().add(BGCoreCSS.Marker.TENT.end());
 
         return List.of(
                 new GCNameLabel(context, memberEnd, name),
