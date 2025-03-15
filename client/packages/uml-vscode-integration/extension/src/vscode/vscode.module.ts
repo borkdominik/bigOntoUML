@@ -12,9 +12,12 @@ import { TYPES } from '../di.types';
 import { CommandManager } from './command/command.manager';
 import { DisposableManager } from './disposable/disposable.manager';
 import { UMLDiagramEditorProvider } from './editor/editor.provider';
+import { ExportModelCommand } from './export-model/export-model.command';
+import { ImportModelCommand } from './import-model/import-model.command';
 import { NewFileCommand } from './new-file/new-file.command';
 import { NewFileCreator } from './new-file/new-file.creator';
 import { OutputChannel } from './output/output.channel';
+import { PhasePartitionCommand } from './pattern-commands/pase-partintion-patterncommand';
 import { Settings } from './settings/settings';
 import { WorkspaceWatcher } from './workspace/workspace.watcher';
 
@@ -29,6 +32,9 @@ export const vscodeModule = new ContainerModule(bind => {
 
     bind(NewFileCreator).toSelf().inSingletonScope();
     bind(TYPES.Command).to(NewFileCommand);
+    bind(TYPES.Command).to(ImportModelCommand);
+    bind(TYPES.Command).to(ExportModelCommand);
+    bind(TYPES.Command).to(PhasePartitionCommand);
 
     bind(UMLDiagramEditorProvider).toSelf().inSingletonScope();
     bind(TYPES.EditorProvider).toService(UMLDiagramEditorProvider);

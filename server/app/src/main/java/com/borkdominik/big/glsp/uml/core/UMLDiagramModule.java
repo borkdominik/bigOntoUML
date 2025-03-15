@@ -10,8 +10,12 @@
  ********************************************************************************/
 package com.borkdominik.big.glsp.uml.core;
 
+import com.borkdominik.big.glsp.uml.core.pattern.PhasePatternActionHandler;
 import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.CustomModelValidator;
 import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.ModelValidationHandler;
+import org.eclipse.glsp.server.actions.ActionHandler;
+import org.eclipse.glsp.server.actions.ActionHandlerRegistry;
+import org.eclipse.glsp.server.di.MultiBinding;
 import org.eclipse.glsp.server.features.core.model.GModelFactory;
 
 import com.borkdominik.big.glsp.server.core.BGEMFDiagramModule;
@@ -54,6 +58,13 @@ public class UMLDiagramModule extends BGEMFDiagramModule {
       return CustomModelValidator.class;
    }
 
+   @Override
+   protected void configureActionHandlers(MultiBinding<ActionHandler> bindings) {
+      super.configureActionHandlers(bindings);
+      bindings.add(ImportModelActionHandler.class);
+      bindings.add(ExportModelActionHandler.class);
+      bindings.add(PhasePatternActionHandler.class);
+   }
 
    @Override
    public String getDiagramType() {

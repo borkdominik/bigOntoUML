@@ -67,6 +67,24 @@
         "enablement": "workspaceFolderCount > 0"
       },
       {
+        "command": "bigUML.importModel",
+        "title": "Import OntoUml model",
+        "category": "bigUML",
+        "enablement": "workspaceFolderCount > 0"
+      },
+      {
+        "command": "bigUML.exportModel",
+        "title": "Export OntoUml model",
+        "category": "bigUML",
+        "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
+      },
+      {
+        "command": "bigUML.phasePartitionPattern",
+        "title": "OntoUml Patterns: Phase Partition",
+        "category": "bigUML",
+        "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
+      },
+      {
         "command": "bigUML.exportAsSVG",
         "title": "Export as SVG",
         "category": "bigUML",
