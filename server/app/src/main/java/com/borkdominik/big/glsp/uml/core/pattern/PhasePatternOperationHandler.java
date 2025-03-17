@@ -10,11 +10,11 @@
  ********************************************************************************/
 package com.borkdominik.big.glsp.uml.core.pattern;
 
-import com.borkdominik.big.glsp.server.core.handler.action.integrations.BGEMFActionHandler;
+import com.borkdominik.big.glsp.server.core.handler.operation.BGBasicOperationHandler;
 import com.borkdominik.big.glsp.server.core.model.BGEMFModelState;
 import com.google.inject.Inject;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.glsp.graph.util.GraphUtil;
-import org.eclipse.glsp.server.actions.Action;
 import org.eclipse.glsp.server.emf.EMFIdGenerator;
 import org.eclipse.glsp.server.emf.model.notation.NotationElement;
 import org.eclipse.glsp.server.emf.model.notation.NotationFactory;
@@ -24,10 +24,9 @@ import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.UMLFactory;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Optional;
 
-public class PhasePatternActionHandler extends BGEMFActionHandler<PhasePatternAction> {
+public class PhasePatternOperationHandler extends BGBasicOperationHandler<PhasePatternOperation> {
 
     @Inject
     protected BGEMFModelState modelState;
@@ -35,7 +34,13 @@ public class PhasePatternActionHandler extends BGEMFActionHandler<PhasePatternAc
     protected EMFIdGenerator idGenerator;
 
     @Override
-    protected List<Action> executeAction(final PhasePatternAction actualAction) {
+    public Optional<Command> createCommand(PhasePatternOperation operation) {
+        return Optional.of(new PhaseCommand(modelState.getRoot(),"PhasePatternActionHandler", () -> {
+            executeAction(operation);
+        }));
+    }
+
+    private void executeAction(final PhasePatternOperation actualAction) {
         var model = ((Model) modelState.getSemanticModel());
         var notationalModel = modelState.getNotationModel();
 
@@ -52,8 +57,6 @@ public class PhasePatternActionHandler extends BGEMFActionHandler<PhasePatternAc
             createEdge(generalisation);
             counter++;
         }
-
-        return Collections.emptyList();
     }
 
     private Class createClass(String className, String stereotype, Model model) {
@@ -101,5 +104,4 @@ public class PhasePatternActionHandler extends BGEMFActionHandler<PhasePatternAc
                 .stream().filter(notationElement -> notationElement.getSemanticElement().getElementId().equals(elementId))
                 .findFirst().get();
     }
-
 }

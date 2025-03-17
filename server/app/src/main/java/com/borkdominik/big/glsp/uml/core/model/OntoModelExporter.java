@@ -13,25 +13,37 @@ import org.eclipse.uml2.uml.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 public class OntoModelExporter {
 
     public void exportModel(String filePath, BGEMFModelState model, EMFIdGenerator idGenerator) {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode root = objectMapper.createObjectNode();
-        ObjectNode modelNode = objectMapper.createObjectNode();
-        ArrayNode contents = objectMapper.createArrayNode();
+        var contents = new ArrayList<JUmlElement>();
 
         Model umlModel = (Model) model.getSemanticModel();
         for (PackageableElement element : umlModel.getPackagedElements()) {
             if (element instanceof Class) {
-                contents.add(exportClass((Class) element, objectMapper, idGenerator));
+                contents.add(exportClass((Class) element, idGenerator));
             } else if (element instanceof Association) {
                 contents.add(exportAssociation((Association) element, objectMapper, idGenerator));
             }
         }
-        modelNode.set("contents", contents);
-        root.set("model", modelNode);
+
+        var packageNode = objectMapper.createObjectNode();
+        packageNode.putPOJO("contents", contents);
+        packageNode.put("id", "HW27Sf6GAqAAbwBO_root");
+        packageNode.put("type", "Package");
+        packageNode.put("name", "ontology");
+
+        root.set("model", packageNode);
+        root.put("type", "Project");
+        root.put("name", "ontology");
+        root.put("id", "HW27Sf6GAqAAbwBO");
+
 
         root.set("diagrams", exportDiagrams(model, objectMapper, idGenerator));
 
@@ -42,36 +54,36 @@ public class OntoModelExporter {
         }
     }
 
-    private ObjectNode exportClass(Class umlClass, ObjectMapper objectMapper, EMFIdGenerator idGenerator) {
-        ObjectNode classNode = objectMapper.createObjectNode();
-        classNode.put("id", idGenerator.getOrCreateId(umlClass));
-        classNode.put("type", "Class");
-        classNode.put("name", umlClass.getName());
-        if (!umlClass.getAppliedStereotypes().isEmpty()) {
-            classNode.put("stereotype", umlClass.getAppliedStereotypes().get(0).getName());
-        }
-        return classNode;
+    private JUmlElement exportClass(Class umlClass, EMFIdGenerator idGenerator) {
+        return new JUmlElement(
+                idGenerator.getOrCreateId(umlClass),
+                umlClass.getName(),
+                null,
+                "Class",
+                umlClass.getAppliedStereotypes().stream().map(NamedElement::getName).map(String::toLowerCase).findFirst().orElse(null),
+                null
+        );
     }
 
-    private ObjectNode exportAssociation(Association association, ObjectMapper objectMapper, EMFIdGenerator idGenerator) {
-        ObjectNode associationNode = objectMapper.createObjectNode();
-        associationNode.put("id", idGenerator.getOrCreateId(association));
-        associationNode.put("type", "Relation");
-        ArrayNode properties = objectMapper.createArrayNode();
+    private JUmlElement exportAssociation(Association association, ObjectMapper objectMapper, EMFIdGenerator idGenerator) {
+        var properties = new ArrayList<JProperty>();
 
         for (Property end : association.getMemberEnds()) {
-            ObjectNode propertyNode = objectMapper.createObjectNode();
-            ObjectNode propertyType = objectMapper.createObjectNode();
-            propertyType.put("id", idGenerator.getOrCreateId(end.getType()));
-            propertyNode.set("propertyType", propertyType);
-            properties.add(propertyNode);
+            properties.add(new JProperty(
+                    idGenerator.getOrCreateId(end.getType()),
+                    "Property",
+                    new JPropertyType(idGenerator.getOrCreateId(end.getType()),"Class")
+            ));
         }
 
-        associationNode.set("properties", properties);
-        if (!association.getAppliedStereotypes().isEmpty()) {
-            associationNode.put("stereotype", association.getAppliedStereotypes().get(0).getName().toLowerCase());
-        }
-        return associationNode;
+        return new JUmlElement(
+                idGenerator.getOrCreateId(association),
+                association.getName(),
+                null,
+                "Relation",
+                association.getAppliedStereotypes().stream().map(NamedElement::getName).map(String::toLowerCase).findFirst().orElse(null),
+                properties
+        );
     }
 
     private ArrayNode exportDiagrams(BGEMFModelState model, ObjectMapper objectMapper, EMFIdGenerator idGenerator) {
@@ -79,18 +91,33 @@ public class OntoModelExporter {
         ObjectNode diagramNode = objectMapper.createObjectNode();
         ArrayNode diagramContents = objectMapper.createArrayNode();
 
+        diagramNode.put("id", "YQHz5G6GAqACBBeg");
+        diagramNode.put("name", "Diagram");
+        diagramNode.put("type", "Diagram");
+
+        ObjectNode diagramOwner = objectMapper.createObjectNode();
+        diagramOwner.put("id", "HW27Sf6GAqAAbwBO_root");
+        diagramOwner.put("type", "Package");
+        diagramNode.set("owner", diagramOwner);
+
         for (NotationElement notationElement : model.getNotationModel().getElements()) {
-            if (notationElement instanceof Shape) {
-                Shape shape = (Shape) notationElement;
+            if (notationElement instanceof Shape shape) {
                 ObjectNode elementNode = objectMapper.createObjectNode();
                 elementNode.put("type", "ClassView");
+                elementNode.put("id", shape.getSemanticElement().getElementId() + "_diagram");
+
                 ObjectNode modelElementNode = objectMapper.createObjectNode();
                 modelElementNode.put("id", shape.getSemanticElement().getElementId());
+                modelElementNode.put("type", "Class");
                 elementNode.set("modelElement", modelElementNode);
-                ObjectNode shapeNode = objectMapper.createObjectNode();
-                shapeNode.put("x", shape.getPosition().getX());
-                shapeNode.put("y", shape.getPosition().getY());
-                elementNode.set("shape", shapeNode);
+                elementNode.putPOJO("shape", new JShape(
+                        shape.getPosition().getX(),
+                        shape.getPosition().getY(),
+                        80,
+                        40,
+                        "Rectangle",
+                        shape.getSemanticElement().getElementId() + "_shape"
+                ));
                 diagramContents.add(elementNode);
             }
         }
@@ -98,5 +125,18 @@ public class OntoModelExporter {
         diagramsArray.add(diagramNode);
 
         return diagramsArray;
+    }
+
+    record JShape(double x, double y, int width, int height, String shape, String id) {
+    }
+
+    record JUmlElement(String id, String name, List<JUmlElement> content, String type, String stereotype,
+                       List<JProperty> properties) {
+    }
+
+    record JProperty(String id, String type, JPropertyType propertyType) {
+    }
+
+    record JPropertyType(String id, String type) {
     }
 }

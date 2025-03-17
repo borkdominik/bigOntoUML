@@ -10,11 +10,10 @@
  ********************************************************************************/
 package com.borkdominik.big.glsp.uml.core;
 
-import com.borkdominik.big.glsp.uml.core.pattern.PhasePatternActionHandler;
+import com.borkdominik.big.glsp.uml.core.pattern.PhasePatternOperationHandler;
 import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.CustomModelValidator;
 import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.ModelValidationHandler;
 import org.eclipse.glsp.server.actions.ActionHandler;
-import org.eclipse.glsp.server.actions.ActionHandlerRegistry;
 import org.eclipse.glsp.server.di.MultiBinding;
 import org.eclipse.glsp.server.features.core.model.GModelFactory;
 
@@ -26,6 +25,7 @@ import com.borkdominik.big.glsp.uml.core.model.UMLModelRepresentation;
 import com.borkdominik.big.glsp.uml.core.model.UMLSourceModelStorage;
 import org.eclipse.glsp.server.features.validation.ModelValidator;
 import org.eclipse.glsp.server.features.validation.RequestMarkersHandler;
+import org.eclipse.glsp.server.operations.OperationHandler;
 
 public class UMLDiagramModule extends BGEMFDiagramModule {
 
@@ -63,7 +63,12 @@ public class UMLDiagramModule extends BGEMFDiagramModule {
       super.configureActionHandlers(bindings);
       bindings.add(ImportModelActionHandler.class);
       bindings.add(ExportModelActionHandler.class);
-      bindings.add(PhasePatternActionHandler.class);
+   }
+
+   @Override
+   protected void configureOperationHandlers(MultiBinding<OperationHandler<?>> bindings) {
+      super.configureOperationHandlers(bindings);
+      bindings.add(PhasePatternOperationHandler.class);
    }
 
    @Override

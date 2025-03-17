@@ -18,10 +18,10 @@ import java.util.Map;
 
 public class OntoModelImporter {
 
-    private Map<String, NamedElement> objectMap = new HashMap<>();
+    private final Map<String, NamedElement> objectMap = new HashMap<>();
 
     public void importModel(String urlPath, BGEMFModelState model, EMFIdGenerator idGenerator) {
-        File file = new File("/home/benjamin/projects/ontoUML/ontouml-models/models/dpo2017/ontology.json");
+        File file = new File(urlPath);
         if (!file.exists() || !file.isFile()) {
             System.err.println("File not found: " + urlPath);
             return;

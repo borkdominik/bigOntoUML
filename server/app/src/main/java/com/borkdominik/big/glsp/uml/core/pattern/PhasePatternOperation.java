@@ -10,27 +10,26 @@
  ********************************************************************************/
 package com.borkdominik.big.glsp.uml.core.pattern;
 
-import com.borkdominik.big.glsp.server.core.handler.action.new_file.BGNewFileResponseAction;
-import org.eclipse.glsp.server.actions.RequestAction;
+import org.eclipse.glsp.server.operations.Operation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PhasePatternAction extends RequestAction<BGNewFileResponseAction> {
+public class PhasePatternOperation extends Operation {
    public static final String KIND = "phasePattern";
 
    private final Map<String, String> options;
    private final List<String> phases;
 
-   public PhasePatternAction() {
+   public PhasePatternOperation() {
       super(KIND);
       options = new HashMap<>();
       phases = new ArrayList<>();
    }
 
-   public PhasePatternAction(final Map<String, String> options, List<String> phases) {
+   public PhasePatternOperation(final Map<String, String> options, List<String> phases) {
       super(KIND);
       this.options = options;
       this.phases = phases;
