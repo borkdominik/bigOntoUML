@@ -42,7 +42,8 @@ public class ImportModelActionHandler extends BGEMFActionHandler<ImportModelActi
 
     @Override
     protected List<Action> executeAction(final ImportModelAction actualAction) {
-        var hackOptions = Map.of("sourceUri", actualAction.getOptions().get("filename"));
+        var umlFilePath = actualAction.getOptions().get("modelUri") + "/" + actualAction.getOptions().get("filename");
+        var hackOptions = Map.of("sourceUri", umlFilePath);
         var hack = new BGRequestNewFileAction(hackOptions);
         hack.setDiagramType("ONTO_CLASS");
         var uri = umlSourceModelStorage.createSourceModel(hack);
@@ -50,7 +51,7 @@ public class ImportModelActionHandler extends BGEMFActionHandler<ImportModelActi
         var hack2 = new RequestModelAction(Map.of("sourceUri", uri.path() + ".uml"));
         umlSourceModelStorage.loadSourceModel(hack2);
 
-        var importModelUri = actualAction.getOptions().get("modelUri");
+        var importModelUri = actualAction.getOptions().get("jsonModelUri");
         new OntoModelImporter().importModel(importModelUri, ((BGEMFModelStateImpl) modelState), idGenerator);
 
         var hack3 = new SaveModelAction(uri.path() + ".uml");

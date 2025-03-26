@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.glsp.server.actions.SaveModelAction;
 import org.eclipse.glsp.server.emf.EMFIdGenerator;
 import org.eclipse.glsp.server.emf.model.notation.NotationFactory;
@@ -32,6 +33,7 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import java.io.IOException;
@@ -143,15 +145,20 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
     }
 
     private Profile loadOntoUmlProfile() {
+        var resourceFile = UMLSourceModelStorage.class.getResourceAsStream("/OntoUML.uml");
+        var resourceSet = this.getOrCreateEditingDomain().getResourceSet();
+
+        // Create a URI for the in-memory model (temporary, as InputStream has no URI)
+        URI uri = URI.createURI("https://www.vorstieg.eu/ontouml.uml");
+
+        // Create a resource and load it from the InputStream
+        Resource resource = resourceSet.createResource(uri);
         try {
-            var url = UMLSourceModelStorage.class.getResource("/OntoUML.uml").toURI().getPath();
-            return (Profile)this.loadResource(
-                    this.getOrCreateEditingDomain().getResourceSet(),
-                    URI.createURI(url)).get();
-        } catch (URISyntaxException e) {
+            resource.load(resourceFile, Collections.emptyMap());
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        return (Profile) resource.getContents().get(0);
     }
 
     @Override

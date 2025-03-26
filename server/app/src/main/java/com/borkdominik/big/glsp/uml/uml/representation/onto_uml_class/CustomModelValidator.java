@@ -30,21 +30,18 @@ public class CustomModelValidator implements ModelValidator {
         var markers = new ArrayList<Marker>();
         for (GModelElement element : elements) {
             if (element instanceof GNode) {
-                var semantic = modelState.getElementIndex().getSemantic(element.getId()).get();
-
-                if (semantic instanceof Class c) {
-                    validateClass((GNode) element, c, markers);
-                }
-                if (semantic instanceof Generalization g) {
-                    validateGeneralisation((GNode) element, g, markers);
-                }
-
+                modelState.getElementIndex().getSemantic(element.getId()).ifPresent(semantic ->
+                        {
+                            if (semantic instanceof Class c) validateClass((GNode) element, c, markers);
+                            if (semantic instanceof Generalization g) validateGeneralisation((GNode) element, g, markers);
+                        }
+                );
             }
             if (element instanceof GEdge) {
-                var semantic = modelState.getElementIndex().getSemantic(element.getId()).get();
-                if (semantic instanceof Association a) {
-                    validateAssociation((GEdge) element, a, markers);
-                }
+                modelState.getElementIndex().getSemantic(element.getId()).ifPresent(semantic -> {
+                            if (semantic instanceof Association a) validateAssociation((GEdge) element, a, markers);
+                        }
+                );
             }
             element.getChildren().forEach(child -> markers.addAll(validate(child)));
         }
