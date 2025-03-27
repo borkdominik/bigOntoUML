@@ -62,7 +62,10 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
 
     }
 
-    @Override
+    @Inject
+   protected UMLModelMigrator migrator;
+
+   @Override
     protected ResourceSet setupResourceSet(final ResourceSet resourceSet) {
         super.setupResourceSet(resourceSet);
         resourceSet.getPackageRegistry().put(UMLPackage.eINSTANCE.getNsURI(), UMLPackage.eINSTANCE);
@@ -100,6 +103,19 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
     protected URI deriveNotationModelURI(final URI sourceURI) {
         return sourceURI.trimFileExtension().appendFileExtension("unotation");
     }
+
+   @Override
+   protected void loadNotationModel(ResourceSet resourceSet, URI sourceURI, RequestModelAction action) {
+      // Migrate the notation model file if necessary
+      migrator.migrateNotationModel(resourceSet, deriveNotationModelURI(sourceURI), action);
+
+      super.loadNotationModel(resourceSet, sourceURI, action);
+   }
+
+   @Override
+   protected URI deriveNotationModelURI(final URI sourceURI) {
+      return sourceURI.trimFileExtension().appendFileExtension("unotation");
+   }
 
     @Override
     protected void doCreateSourceModel(final ResourceSet resourceSet, final URI resourceURI,

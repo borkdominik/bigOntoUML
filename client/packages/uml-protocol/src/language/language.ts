@@ -25,21 +25,3 @@ export enum UMLDiagramType {
     INFORMATION_FLOW = 'INFORMATION_FLOW',
     ONTO_CLASS = 'ONTO_CLASS'
 }
-
-export namespace UMLDiagramTypeUtil {
-    export const supported: UMLDiagramType[] = [
-        UMLDiagramType.ACTIVITY,
-        UMLDiagramType.CLASS,
-        UMLDiagramType.COMMUNICATION,
-        UMLDiagramType.DEPLOYMENT,
-        UMLDiagramType.INFORMATION_FLOW,
-        UMLDiagramType.PACKAGE,
-        UMLDiagramType.STATE_MACHINE,
-        UMLDiagramType.ONTO_CLASS,
-        UMLDiagramType.USE_CASE
-    ];
-
-    export function parseString(diagramType: string): UMLDiagramType {
-        return Object.values(UMLDiagramType).find(u => u.toUpperCase() === diagramType.toUpperCase()) ?? UMLDiagramType.NONE;
-    }
-}

@@ -21,13 +21,18 @@ import com.borkdominik.big.glsp.server.core.BGEMFDiagramModule;
 import com.borkdominik.big.glsp.server.core.model.BGModelRepresentation;
 import com.borkdominik.big.glsp.server.core.model.integrations.BGEMFSourceModelStorage;
 import com.borkdominik.big.glsp.uml.core.gmodel.UMLGModelFactory;
+import com.borkdominik.big.glsp.uml.core.model.UMLModelMigrator;
 import com.borkdominik.big.glsp.uml.core.model.UMLModelRepresentation;
 import com.borkdominik.big.glsp.uml.core.model.UMLSourceModelStorage;
-import org.eclipse.glsp.server.features.validation.ModelValidator;
-import org.eclipse.glsp.server.features.validation.RequestMarkersHandler;
-import org.eclipse.glsp.server.operations.OperationHandler;
 
 public class UMLDiagramModule extends BGEMFDiagramModule {
+
+   @Override
+   protected void configureAdditionals() {
+      super.configureAdditionals();
+
+      bind(UMLModelMigrator.class).in(Singleton.class);
+   }
 
    @Override
    protected Class<? extends BGModelRepresentation> bindBGModelStateRepresentation() {
