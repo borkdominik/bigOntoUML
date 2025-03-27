@@ -152,8 +152,8 @@ public class OntoModelExporter {
 
     private static JClassView getjClassView(Shape shape) {
         var jshape = new JShape(
-                shape.getPosition().getX(),
-                shape.getPosition().getY(),
+                (int) shape.getPosition().getX(),
+                (int) shape.getPosition().getY(),
                 80,
                 40,
                 "Rectangle",
@@ -172,7 +172,7 @@ public class OntoModelExporter {
         );
     }
 
-    record JShape(double x, double y, int width, int height, String shape, String id) {
+    record JShape(int x, int y, int width, int height, String shape, String id) {
     }
 
     record JRelation(String id, String type, JProperty modelElement, JProperty source,
