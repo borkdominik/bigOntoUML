@@ -17,6 +17,7 @@ export const UMLLangugageEnvironment = {
         UMLDiagramType.INFORMATION_FLOW,
         UMLDiagramType.PACKAGE,
         UMLDiagramType.STATE_MACHINE,
+        UMLDiagramType.ONTO_CLASS,
         UMLDiagramType.USE_CASE
     ]
 };

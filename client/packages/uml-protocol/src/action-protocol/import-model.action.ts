@@ -6,7 +6,7 @@
  *
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
-import { Action, JsonMap, RequestAction, ResponseAction } from '@eclipse-glsp/protocol';
+import { Action, type JsonMap, type RequestAction, type ResponseAction } from '@eclipse-glsp/protocol';
 
 export interface ImportModelAction extends RequestAction<ImportModelResponseAction> {
     kind: typeof ImportModelAction.KIND;

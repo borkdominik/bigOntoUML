@@ -14,7 +14,7 @@ import org.eclipse.uml2.uml.Class;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomModelValidator implements ModelValidator {
+public class OntoUmlValidator implements ModelValidator {
 
     public static final String OBJECT_CLASS = "Object Class";
     @Inject

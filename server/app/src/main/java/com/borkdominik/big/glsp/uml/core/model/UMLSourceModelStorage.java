@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.glsp.server.actions.SaveModelAction;
 import org.eclipse.glsp.server.emf.EMFIdGenerator;
 import org.eclipse.glsp.server.emf.model.notation.NotationFactory;
@@ -33,11 +32,9 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Collections;
 
 public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
@@ -110,11 +107,6 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
       migrator.migrateNotationModel(resourceSet, deriveNotationModelURI(sourceURI), action);
 
       super.loadNotationModel(resourceSet, sourceURI, action);
-   }
-
-   @Override
-   protected URI deriveNotationModelURI(final URI sourceURI) {
-      return sourceURI.trimFileExtension().appendFileExtension("unotation");
    }
 
     @Override

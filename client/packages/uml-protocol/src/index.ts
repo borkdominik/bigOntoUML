@@ -12,7 +12,7 @@ export * from './action-protocol/reexport.js';
 export * from './action-protocol/utils.js';
 export * from './language/language.js';
 export * from './language/uml-adapter.js';
-export * from './action-protocol/export-model.action';
-export * from './action-protocol/import-model.action';
-export * from './action-protocol/phase-pattern.action';
+export * from './action-protocol/export-model.action.js';
+export * from './action-protocol/import-model.action.js';
+export * from './action-protocol/phase-pattern.action.js';
 

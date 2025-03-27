@@ -66,49 +66,49 @@
       {
         "command": "bigUML.model.newEmpty",
         "title": "New Empty UML Diagram",
-        "category": "bigUML",
+        "category": "bigOntoUML",
         "enablement": "workspaceFolderCount > 0"
       },
       {
         "command": "bigUML.importModel",
         "title": "Import OntoUml model",
-        "category": "bigUML",
+        "category": "bigOntoUML",
         "enablement": "workspaceFolderCount > 0"
       },
       {
         "command": "bigUML.exportModel",
         "title": "Export OntoUml model",
-        "category": "bigUML",
+        "category": "bigOntoUML",
         "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
       },
       {
         "command": "bigUML.phasePartitionPattern",
         "title": "OntoUml Patterns: Phase Partition",
-        "category": "bigUML",
+        "category": "bigOntoUML",
         "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
       },
       {
         "command": "bigUML.exportAsSVG",
         "title": "Export as SVG",
-        "category": "bigUML",
+        "category": "bigOntoUML",
         "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
       },
       {
         "command": "bigUML.fit",
         "title": "Fit to Screen",
-        "category": "bigUML",
+        "category": "bigOntoUML",
         "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
       },
       {
         "command": "bigUML.center",
         "title": "Center selection",
-        "category": "bigUML",
+        "category": "bigOntoUML",
         "enablement": "activeCustomEditorId == 'bigUML.diagramView'"
       },
       {
         "command": "bigUML.show.umlPanel",
         "title": "Show UML panel",
-        "category": "bigUML",
+        "category": "bigOntoUML",
         "enablement": "activeCustomEditorId == 'bigUML.diagramView'",
         "icon": "$(symbol-reference)"
       }

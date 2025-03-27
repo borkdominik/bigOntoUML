@@ -11,7 +11,7 @@
 package com.borkdominik.big.glsp.uml.core;
 
 import com.borkdominik.big.glsp.uml.core.pattern.PhasePatternOperationHandler;
-import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.CustomModelValidator;
+import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.OntoUmlValidator;
 import com.borkdominik.big.glsp.uml.uml.representation.onto_uml_class.ModelValidationHandler;
 import org.eclipse.glsp.server.actions.ActionHandler;
 import org.eclipse.glsp.server.di.MultiBinding;
@@ -24,6 +24,10 @@ import com.borkdominik.big.glsp.uml.core.gmodel.UMLGModelFactory;
 import com.borkdominik.big.glsp.uml.core.model.UMLModelMigrator;
 import com.borkdominik.big.glsp.uml.core.model.UMLModelRepresentation;
 import com.borkdominik.big.glsp.uml.core.model.UMLSourceModelStorage;
+import org.eclipse.glsp.server.features.validation.ModelValidator;
+import org.eclipse.glsp.server.features.validation.RequestMarkersHandler;
+import org.eclipse.glsp.server.operations.OperationHandler;
+import com.google.inject.Singleton;
 
 public class UMLDiagramModule extends BGEMFDiagramModule {
 
@@ -60,7 +64,7 @@ public class UMLDiagramModule extends BGEMFDiagramModule {
 
    @Override
    protected Class<? extends ModelValidator> bindModelValidator() {
-      return CustomModelValidator.class;
+      return OntoUmlValidator.class;
    }
 
    @Override

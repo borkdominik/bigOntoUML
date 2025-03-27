@@ -6,19 +6,17 @@
  *
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
+import { type BIGGLSPVSCodeConnector, TYPES, type VSCodeCommand } from '@borkdominik-biguml/big-vscode-integration/vscode';
+import { type IDESessionClient } from '@borkdominik-biguml/big-vscode-integration/vscode-node';
+import { type UMLDiagramEditorProvider } from '@borkdominik-biguml/uml-glsp-client/vscode';
 import { PhasePatternAction } from '@borkdominik-biguml/uml-protocol';
 import { inject, injectable } from 'inversify';
 import * as vscode from 'vscode';
-import { TYPES } from '../../di.types';
-import { IDESessionClient } from '../../glsp/ide-session-client';
-import { UMLGLSPConnector } from '../../glsp/uml-glsp-connector';
-import { VSCodeCommand } from '../command/command';
-import { UMLDiagramEditorProvider } from '../editor/editor.provider';
 
 @injectable()
 export class PhasePartitionCommand implements VSCodeCommand {
-    @inject(TYPES.Connector)
-    protected readonly connector: UMLGLSPConnector;
+    @inject(TYPES.GLSPVSCodeConnector)
+    protected readonly connector: BIGGLSPVSCodeConnector;
 
     constructor(
         @inject(TYPES.IDESessionClient)
@@ -33,7 +31,7 @@ export class PhasePartitionCommand implements VSCodeCommand {
         return 'bigUML.phasePartitionPattern';
     }
 
-    execute(...args: any[]): void {
+    execute(): void {
         this.activate();
     }
 
@@ -45,21 +43,16 @@ export class PhasePartitionCommand implements VSCodeCommand {
                 validateInput: text => (text.trim().length === 0 ? 'Id provider is required' : null)
             })) ?? '';
 
-        const phaseAmount =
-            Number(
-                await vscode.window.showInputBox({
-                    prompt: 'Enter phase amount',
-                    placeHolder: '2',
-                    validateInput: text =>
-                        Number(text) <= 0
-                            ? 'Phase amount needs to be an integer greater than 0' +
-                              text +
-                              !Number.isInteger(text) +
-                              '' +
-                              (Number(text) <= 0)
-                            : null
-                })
-            ) ?? 1;
+        const phaseAmount = Number(
+            await vscode.window.showInputBox({
+                prompt: 'Enter phase amount',
+                placeHolder: '2',
+                validateInput: text =>
+                    Number(text) <= 0
+                        ? 'Phase amount needs to be an integer greater than 0' + text + !Number.isInteger(text) + '' + (Number(text) <= 0)
+                        : null
+            })
+        );
 
         const phases = [];
 
@@ -73,6 +66,6 @@ export class PhasePartitionCommand implements VSCodeCommand {
             );
         }
 
-        this.connector.sendActionToActiveClient(PhasePatternAction.create(idProvider, phases));
+        this.connector.dispatchAction(PhasePatternAction.create(idProvider, phases));
     }
 }

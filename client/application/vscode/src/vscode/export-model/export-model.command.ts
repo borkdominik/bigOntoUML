@@ -6,23 +6,21 @@
  *
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
+import { type BIGGLSPVSCodeConnector, TYPES, type VSCodeCommand } from '@borkdominik-biguml/big-vscode-integration/vscode';
 import { ExportModelAction } from '@borkdominik-biguml/uml-protocol';
 import { inject, injectable } from 'inversify';
 import * as vscode from 'vscode';
-import { TYPES } from '../../di.types';
-import { UMLGLSPConnector } from '../../glsp/uml-glsp-connector';
-import { VSCodeCommand } from '../command/command';
 
 @injectable()
 export class ExportModelCommand implements VSCodeCommand {
-    @inject(TYPES.Connector)
-    protected readonly connector: UMLGLSPConnector;
+    @inject(TYPES.GLSPVSCodeConnector)
+    protected readonly connector: BIGGLSPVSCodeConnector;
 
     get id(): string {
         return 'bigUML.exportModel';
     }
 
-    execute(...args: any[]): void {
+    execute(): void {
         this._execute();
     }
     private async _execute(): Promise<void> {

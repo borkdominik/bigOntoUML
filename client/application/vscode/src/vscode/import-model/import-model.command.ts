@@ -6,20 +6,18 @@
  *
  * SPDX-License-Identifier: MIT
  *********************************************************************************/
+import { type BIGGLSPVSCodeConnector, TYPES, type VSCodeCommand } from '@borkdominik-biguml/big-vscode-integration/vscode';
+import { type IDESessionClient } from '@borkdominik-biguml/big-vscode-integration/vscode-node';
+import { type UMLDiagramEditorProvider } from '@borkdominik-biguml/uml-glsp-client/vscode';
 import { ImportModelAction } from '@borkdominik-biguml/uml-protocol';
 import { inject, injectable } from 'inversify';
 import URIJS from 'urijs';
 import * as vscode from 'vscode';
-import { TYPES } from '../../di.types';
-import { IDESessionClient } from '../../glsp/ide-session-client';
-import { UMLGLSPConnector } from '../../glsp/uml-glsp-connector';
-import { VSCodeCommand } from '../command/command';
-import { UMLDiagramEditorProvider } from '../editor/editor.provider';
 
 @injectable()
 export class ImportModelCommand implements VSCodeCommand {
-    @inject(TYPES.Connector)
-    protected readonly connector: UMLGLSPConnector;
+    @inject(TYPES.GLSPVSCodeConnector)
+    protected readonly connector: BIGGLSPVSCodeConnector;
 
     constructor(
         @inject(TYPES.IDESessionClient)
@@ -34,7 +32,7 @@ export class ImportModelCommand implements VSCodeCommand {
         return 'bigUML.importModel';
     }
 
-    execute(...args: any[]): void {
+    execute(): void {
         this.activate();
     }
 
