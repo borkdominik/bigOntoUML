@@ -27,7 +27,7 @@ export class ExportModelCommand implements VSCodeCommand {
     }
     private async _execute(): Promise<void> {
         const workspaces = vscode.workspace.workspaceFolders;
-        const filePath = workspaces?.[0] + '/ontology.json';
+        const filePath = workspaces?.[0]?.uri.path + '/ontology.json';
         this.connector.sendActionToActiveClient(ExportModelAction.exportModel(filePath));
     }
 }
