@@ -17,6 +17,23 @@ import java.util.List;
 public class OntoUmlValidator implements ModelValidator {
 
     public static final String OBJECT_CLASS = "Object Class";
+    public static final String SUBSTANCE_SORTAL = "Substance Sortal";
+    public static final String SORTAL_CLASS = "Sortal Class";
+    public static final String RIGID_SORTAL_CLASS = "Rigid Sortal Class";
+    public static final String MIXIN_CLASS = "Mixin Class";
+    public static final String CATEGORY = "Category";
+    public static final String MIXIN = "Mixin";
+    public static final String RELATOR = "Relator";
+    public static final String ROLE = "Role";
+    public static final String ROLE_MIXIN = "RoleMixin";
+    public static final String QUALIFIED_MEDIATION = "BigOntoUml::OntoUML::Mediation";
+    public static final String MODE = "Mode";
+    public static final String STEREOTYPE = "Stereotype";
+    public static final String MATERIAL_ASSOCIATION = "MaterialAssociation";
+    public static final String DERIVATION = "Derivation";
+    public static final String DIRECTED_BINARY_ASSOCIATION = "DirectedBinaryAssociation";
+    public static final String MEDIATION = "Mediation";
+    public static final String CHARACTERIZATION = "Characterization";
     @Inject
     protected BGEMFModelState modelState;
 
@@ -83,30 +100,30 @@ public class OntoUmlValidator implements ModelValidator {
 
     private void evaluateObjectClass(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
         if (hasParentStereotype(stereotype, OBJECT_CLASS)) {
-            if (countAncestorsWithStereotype(_class, "Substance Sortal") > 1) {
+            if (countAncestorsWithStereotype(_class, SUBSTANCE_SORTAL) > 1) {
                 addMarker(element, markers, formatClassMessage("Every Object Class must not have more than one Substance Sortal ancestor", _class));
             }
         }
     }
 
     private void evaluateSortalClass(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Sortal Class") && !hasParentStereotype(stereotype, "Substance Sortal")) {
-            if (countAncestorsWithStereotype(_class, "Substance Sortal") == 0) {
+        if (hasParentStereotype(stereotype, SORTAL_CLASS) && !hasParentStereotype(stereotype, SUBSTANCE_SORTAL)) {
+            if (countAncestorsWithStereotype(_class, SUBSTANCE_SORTAL) == 0) {
                 addMarker(element, markers, formatClassMessage("Every non-abstract Sortal must have a Substance Sortal ancestor (or be a Substance Sortal)", _class));
             }
         }
     }
 
     private void evaluateSubstanceSortal(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Substance Sortal")) {
-            if (countParentsWithStereotype(_class, "Rigid Sortal Class") != 0) {
+        if (hasParentStereotype(stereotype, SUBSTANCE_SORTAL)) {
+            if (countParentsWithStereotype(_class, RIGID_SORTAL_CLASS) != 0) {
                 addMarker(element, markers, formatClassMessage("A Substance Sortal cannot have a Rigid Sortal parent", _class));
             }
         }
     }
 
     private void evaluateRigidSortalClass(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Rigid Sortal Class")) {
+        if (hasParentStereotype(stereotype, RIGID_SORTAL_CLASS)) {
             if (countParentsWithStereotype(_class, "Anti Rigid Sortal Class") != 0 || countAncestorsWithStereotype(_class, "Role Mixin") != 0) {
                 addMarker(element, markers, formatClassMessage("A Rigid Sortal cannot have an Anti-Rigid parent (Role, Phase and RoleMixin)", _class));
             }
@@ -114,15 +131,15 @@ public class OntoUmlValidator implements ModelValidator {
     }
 
     private void evaluateMixinClass(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Mixin Class")) {
-            if (countAncestorsWithStereotype(_class, "Sortal Class") != 0) {
+        if (hasParentStereotype(stereotype, MIXIN_CLASS)) {
+            if (countAncestorsWithStereotype(_class, SORTAL_CLASS) != 0) {
                 addMarker(element, markers, "A Mixin Class (Category, Mixin, RoleMixin) cannot have a Sortal parent (Kind, Quantity, Collective, ");
             }
         }
     }
 
     private void evaluateCategory(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Category")) {
+        if (hasParentStereotype(stereotype, CATEGORY)) {
             if (countAncestorsWithStereotype(_class, "Role Mixin") != 0) {
                 addMarker(element, markers, formatClassMessage("A Category cannot have a Role Mixin parent", _class));
             }
@@ -130,7 +147,7 @@ public class OntoUmlValidator implements ModelValidator {
     }
 
     private void evaluateMixin(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Mixin")) {
+        if (hasParentStereotype(stereotype, MIXIN)) {
             if (countAncestorsWithStereotype(_class, "Role Mixin") != 0) {
                 addMarker(element, markers, formatClassMessage("A Mixin cannot have a RoleMixin parent", _class));
             }
@@ -138,48 +155,48 @@ public class OntoUmlValidator implements ModelValidator {
     }
 
     private void evaluateRelatorMediation(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Relator")) {
-            if (!hasAssociationWithStereotype(_class, "BigOntoUml::OntoUML::Mediation")) {
-                markers.add(new Marker("Stereotype", formatClassMessage("A Relator must be connected (directly or indirectly) to a Mediation", _class), element.getId(),
+        if (hasParentStereotype(stereotype, RELATOR)) {
+            if (!hasAssociationWithStereotype(_class, QUALIFIED_MEDIATION)) {
+                markers.add(new Marker(STEREOTYPE, formatClassMessage("A Relator must be connected (directly or indirectly) to a Mediation", _class), element.getId(),
                         MarkerKind.WARNING));
-            } else if (countLowerAssociationWithStereotype(_class, "BigOntoUml::OntoUML::Mediation") < 2) {
-                markers.add(new Marker("Stereotype", formatClassMessage("The sum of the minimum cardinalities of the mediated ends must be greater or equal to 2", _class)
+            } else if (countLowerAssociationWithStereotype(_class, QUALIFIED_MEDIATION) < 2) {
+                markers.add(new Marker(STEREOTYPE, formatClassMessage("The sum of the minimum cardinalities of the mediated ends must be greater or equal to 2", _class)
                         , element.getId(), MarkerKind.WARNING));
             }
         }
     }
 
     private void evaluateRoleMediation(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Role")) {
-            if (!hasAssociationWithStereotype(_class, "BigOntoUml::OntoUML::Mediation")) {
-                markers.add(new Marker("Stereotype", formatClassMessage("A Role must be connected (directly or indirectly) to a Mediation", _class),
+        if (hasParentStereotype(stereotype, ROLE)) {
+            if (!hasAssociationWithStereotype(_class, QUALIFIED_MEDIATION)) {
+                markers.add(new Marker(STEREOTYPE, formatClassMessage("A Role must be connected (directly or indirectly) to a Mediation", _class),
                         element.getId(), MarkerKind.WARNING));
             }
         }
     }
 
     private void evaluateRoleMixinMediation(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "RoleMixin")) {
-            if (!hasAssociationWithStereotype(_class, "BigOntoUml::OntoUML::Mediation")) {
-                markers.add(new Marker("Stereotype", formatClassMessage("A RoleMixin must be connected (directly or indirectly) to a Mediation", _class), element.getId(),
+        if (hasParentStereotype(stereotype, ROLE_MIXIN)) {
+            if (!hasAssociationWithStereotype(_class, QUALIFIED_MEDIATION)) {
+                markers.add(new Marker(STEREOTYPE, formatClassMessage("A RoleMixin must be connected (directly or indirectly) to a Mediation", _class), element.getId(),
                         MarkerKind.WARNING));
             }
         }
     }
 
     private void evaluateModeCharacterization(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Mode")) {
+        if (hasParentStereotype(stereotype, MODE)) {
             if (!hasAssociationWithStereotype(_class, "BigOntoUml::OntoUML::Characterization")) {
-                markers.add(new Marker("Stereotype", formatClassMessage("A Mode must be connected (directly or indirectly) to a Characterization", _class), element.getId(),
+                markers.add(new Marker(STEREOTYPE, formatClassMessage("A Mode must be connected (directly or indirectly) to a Characterization", _class), element.getId(),
                         MarkerKind.WARNING));
             }
         }
     }
 
     private void evaluateMaterialAssociationDerivation(GNode element, Class _class, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "MaterialAssociation")) {
-            if (countAssociationWithStereotype(_class, "Derivation") != 1) {
-                markers.add(new Marker("Stereotype", formatClassMessage("Every Material Association must be connected to exactly one Derivation", _class), element.getId(),
+        if (hasParentStereotype(stereotype, MATERIAL_ASSOCIATION)) {
+            if (countAssociationWithStereotype(_class, DERIVATION) != 1) {
+                markers.add(new Marker(STEREOTYPE, formatClassMessage("Every Material Association must be connected to exactly one Derivation", _class), element.getId(),
                         MarkerKind.WARNING));
             }
         }
@@ -221,14 +238,14 @@ public class OntoUmlValidator implements ModelValidator {
 
     private void validateAssociation(GEdge element, Association association, ArrayList<Marker> markers) {
         if (association.getAppliedStereotypes().isEmpty()) {
-            markers.add(new Marker("Stereotype", "This Association has no Stereotype", element.getId(),
+            markers.add(new Marker(STEREOTYPE, "This Association has no Stereotype", element.getId(),
                     MarkerKind.WARNING));
             return;
         }
 
         var stereotype = association.getAppliedStereotypes().get(0);
 
-        if (hasParentStereotype(stereotype, "DirectedBinaryAssociation")) {
+        if (hasParentStereotype(stereotype, DIRECTED_BINARY_ASSOCIATION)) {
             if (association.getMemberEnds().get(0).getLower() < 1) {
                 addMarker(element, markers, "The source end minimum cardinality must be greater of equal to 1.");
             }
@@ -239,13 +256,13 @@ public class OntoUmlValidator implements ModelValidator {
     }
 
     private void validateDerivation(GEdge element, Association association, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Derivation")) {
+        if (hasParentStereotype(stereotype, DERIVATION)) {
             var derivationSourceStereotype = association.getMemberEnds().get(1).getType().getAppliedStereotypes().stream().findFirst();
             var derivationTargetStereotype = association.getMemberEnds().get(0).getType().getAppliedStereotypes().stream().findFirst();
-            if (derivationSourceStereotype.isEmpty() || hasParentStereotype(derivationSourceStereotype.get(), "MaterialAssociation")) {
+            if (derivationSourceStereotype.isEmpty() || hasParentStereotype(derivationSourceStereotype.get(), MATERIAL_ASSOCIATION)) {
                 addMarker(element, markers, "(Derivation) The source must be a Material Association");
             }
-            if (derivationTargetStereotype.isEmpty() || hasParentStereotype(derivationTargetStereotype.get(), "Relator")) {
+            if (derivationTargetStereotype.isEmpty() || hasParentStereotype(derivationTargetStereotype.get(), RELATOR)) {
                 addMarker(element, markers, "(Derivation) The target must be a Relator");
             }
             if (association.getMemberEnds().get(0).getLower() != 1 || association.getMemberEnds().get(0).getUpper() != 1) {
@@ -255,9 +272,9 @@ public class OntoUmlValidator implements ModelValidator {
     }
 
     private void validateMediation(GEdge element, Association association, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Mediation")) {
+        if (hasParentStereotype(stereotype, MEDIATION)) {
             var mediationEndStereotype = association.getMemberEnds().get(1).getType().getAppliedStereotypes().stream().findFirst();
-            if (mediationEndStereotype.isEmpty() || !hasParentStereotype(mediationEndStereotype.get(), "Relator")) {
+            if (mediationEndStereotype.isEmpty() || !hasParentStereotype(mediationEndStereotype.get(), RELATOR)) {
                 addMarker(element, markers, "(Mediation) The source must be a Relator");
             }
             if (association.getMemberEnds().get(1).getLower() < 1) {
@@ -267,9 +284,9 @@ public class OntoUmlValidator implements ModelValidator {
     }
 
     private void validateCharacterization(GEdge element, Association association, ArrayList<Marker> markers, Stereotype stereotype) {
-        if (hasParentStereotype(stereotype, "Characterization")) {
+        if (hasParentStereotype(stereotype, CHARACTERIZATION)) {
             var modeEndStereotype = association.getMemberEnds().get(1).getType().getAppliedStereotypes().stream().findFirst();
-            if (modeEndStereotype.isEmpty() || !hasParentStereotype(modeEndStereotype.get(), "Mode")) {
+            if (modeEndStereotype.isEmpty() || !hasParentStereotype(modeEndStereotype.get(), MODE)) {
                 addMarker(element, markers, "(Characterization) The source must be a Mode");
             }
             if (association.getMemberEnds().get(0).getLower() != 1 || association.getMemberEnds().get(0).getUpper() != 1) {
@@ -279,7 +296,7 @@ public class OntoUmlValidator implements ModelValidator {
     }
 
     private static void addMarker(GModelElement element, ArrayList<Marker> markers, String message) {
-        markers.add(new Marker("Stereotype", message,
+        markers.add(new Marker(STEREOTYPE, message,
                 element.getId(),
                 MarkerKind.WARNING));
     }
@@ -327,7 +344,7 @@ public class OntoUmlValidator implements ModelValidator {
     }
 
     protected Marker validateGNode(final GNode element) {
-        return new Marker("Stereotype", "This class has no Stereotype", element.getId(),
+        return new Marker(STEREOTYPE, "This class has no Stereotype", element.getId(),
                 MarkerKind.WARNING);
     }
 
