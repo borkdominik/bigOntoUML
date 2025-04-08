@@ -104,7 +104,6 @@ public class UMLSourceModelStorage extends BGEMFSourceModelStorage {
    @Override
    protected void loadNotationModel(ResourceSet resourceSet, URI sourceURI, RequestModelAction action) {
       // Migrate the notation model file if necessary
-      migrator.migrateNotationModel(resourceSet, deriveNotationModelURI(sourceURI), action);
 
       super.loadNotationModel(resourceSet, sourceURI, action);
    }

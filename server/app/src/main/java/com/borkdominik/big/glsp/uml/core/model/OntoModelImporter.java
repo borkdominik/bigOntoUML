@@ -43,26 +43,23 @@ public class OntoModelImporter {
         }
     }
 
-    private void processClasses(JsonNode jsonNode, BGEMFModelState model, EMFIdGenerator idGenerator) {
-        for (JsonNode element : jsonNode.get("contents")) {
-            String type = element.get("type").asText();
-            if (type.equals("Class")) {
-                createClass(element, model, idGenerator);
-            }
+    private void processClasses(JsonNode classElement, BGEMFModelState model, EMFIdGenerator idGenerator) {
+        String type = classElement.get("type").asText();
+        if (type.equals("Class")) {
+            createClass(classElement, model, idGenerator);
         }
     }
 
-    private void processRelations(JsonNode jsonNode, BGEMFModelState model, EMFIdGenerator idGenerator) {
-        for (JsonNode element : jsonNode.get("contents")) {
-            String type = element.get("type").asText();
-            switch (type) {
-                case "Relation":
-                    createAssociation(element, model, idGenerator);
-                    break;
-                case "Generalization":
-                    createGeneralisation(element, model, idGenerator);
-                    break;
-            }
+    private void processRelations(JsonNode relationElement, BGEMFModelState model, EMFIdGenerator idGenerator) {
+        String type = relationElement.get("type").asText();
+        switch (type) {
+            case "Relation":
+                createAssociation(relationElement, model, idGenerator);
+                break;
+            case "Generalization":
+                createGeneralisation(relationElement, model, idGenerator);
+                break;
+
         }
     }
 

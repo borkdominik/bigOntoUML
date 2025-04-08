@@ -13,7 +13,7 @@ import { ExportModelCommand } from './export-model/export-model.command.js';
 import { ImportModelCommand } from './import-model/import-model.command.js';
 import { NewFileCommand } from './new-file/new-file.command.js';
 import { NewFileCreator } from './new-file/new-file.creator.js';
-import { PhasePartitionCommand } from './pattern-commands/pase-partintion-patterncommand.js';
+import { PhasePartitionCommand } from './pattern-commands/phase-partintion-patterncommand.js';
 import { Settings } from './settings/settings.js';
 
 export const vscodeModule = new ContainerModule(bind => {

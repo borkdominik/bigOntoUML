@@ -72,7 +72,7 @@ public class OntoModelExporter {
 
         for (Property end : association.getMemberEnds()) {
             properties.add(new JProperty(
-                    idGenerator.getOrCreateId(end.getType()) + "property",
+                    idGenerator.getOrCreateId(association) + "_" + idGenerator.getOrCreateId(end.getType()),
                     "Property",
                     new JPropertyType(idGenerator.getOrCreateId(end.getType()), "Class")
             ));
