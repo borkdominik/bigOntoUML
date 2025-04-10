@@ -31,11 +31,27 @@ public class OntoModelImporter {
         try {
             JsonNode jsonNode = objectMapper.readTree(file);
             for (JsonNode uml_package : jsonNode.get("model").get("contents"))
-                for (JsonNode element : uml_package.get("contents"))
-                    processClasses(element, model, idGenerator);
+                if (uml_package.get("type").asText().equals("Package")) {
+                    for (JsonNode element : uml_package.get("contents"))
+                        if (element.get("type").asText().equals("Package")) {
+                            for (JsonNode subPackage : element.get("contents"))
+                                processClasses(subPackage, model, idGenerator);
+                        } else
+                            processClasses(element, model, idGenerator);
+                } else if (uml_package.get("type").asText().equals("Class")) {
+                    processClasses(uml_package, model, idGenerator);
+                }
             for (JsonNode uml_package : jsonNode.get("model").get("contents"))
-                for (JsonNode element : uml_package.get("contents"))
-                    processRelations(element, model, idGenerator);
+                if (uml_package.get("type").asText().equals("Package")) {
+                    for (JsonNode element : uml_package.get("contents"))
+                        if (element.get("type").asText().equals("Package")) {
+                            for (JsonNode subPackage : element.get("contents"))
+                                processRelations(subPackage, model, idGenerator);
+                        } else
+                            processRelations(element, model, idGenerator);
+                } else if (uml_package.get("type").asText().equals("Class")) {
+                    processRelations(uml_package, model, idGenerator);
+                }
 
             processDiagrams(jsonNode.get("diagrams"), model, idGenerator);
         } catch (IOException e) {
@@ -70,11 +86,12 @@ public class OntoModelImporter {
             switch (type) {
                 case "ClassView":
                     var umlClass = objectMap.get(element.get("modelElement").get("id").asText());
-                    var elementId = idGenerator.getOrCreateId(umlClass);
-
-                    var shape = ((Shape) findElement(model, elementId));
-                    shape.setPosition(GraphUtil.point(element.get("shape").get("x").asInt(), element.get("shape").get("y").asInt()));
-                    break;
+                    if (umlClass != null) {
+                        var elementId = idGenerator.getOrCreateId(umlClass);
+                        var shape = ((Shape) findElement(model, elementId));
+                        shape.setPosition(GraphUtil.point(element.get("shape").get("x").asInt(), element.get("shape").get("y").asInt()));
+                        break;
+                    }
             }
         }
     }
