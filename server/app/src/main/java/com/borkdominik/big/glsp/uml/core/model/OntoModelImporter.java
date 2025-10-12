@@ -49,7 +49,7 @@ public class OntoModelImporter {
                                 processRelations(subPackage, model, idGenerator);
                         } else
                             processRelations(element, model, idGenerator);
-                } else if (uml_package.get("type").asText().equals("Class")) {
+                } else {
                     processRelations(uml_package, model, idGenerator);
                 }
 
@@ -136,13 +136,19 @@ public class OntoModelImporter {
             if (!propertyNode.has("propertyType")) continue;
 
             String classId = propertyNode.get("propertyType").get("id").asText();
-            Class relatedClass = (Class) objectMap.get(classId);
-
-            if (relatedClass != null) {
-                Property end = factory.createProperty();
-                end.setType(relatedClass);
-                association.getOwnedEnds().add(end);
+            try {
+                Class relatedClass = (Class) objectMap.get(classId);
+                if (relatedClass != null) {
+                    Property end = factory.createProperty();
+                    end.setType(relatedClass);
+                    association.getOwnedEnds().add(end);
+                }
             }
+            catch (ClassCastException e) {
+                System.err.println("Association error" + e.getMessage());
+                return;
+            }
+
         }
         if (association.getMemberEnds().size() != 2)
             return;
@@ -175,24 +181,27 @@ public class OntoModelImporter {
         var generalId = relationNode.get("general").get("id").asText();
         var specificId = relationNode.get("specific").get("id").asText();
 
-        var specific = (Class) objectMap.get(specificId);
-        var general = (Class) objectMap.get(generalId);
-        var generalisation = specific.createGeneralization(general);
+        try {
+            var specific = (Class) objectMap.get(specificId);
+            var general = (Class) objectMap.get(generalId);
+            var generalisation = specific.createGeneralization(general);
 
-        var edge = NotationFactory.eINSTANCE.createEdge();
-        var sourceId = idGenerator.getOrCreateId(specific);
-        var targetId = idGenerator.getOrCreateId(general);
-        edge.setSource(findElement(fullModel, sourceId));
-        edge.setTarget(findElement(fullModel, targetId));
+            var edge = NotationFactory.eINSTANCE.createEdge();
+            var sourceId = idGenerator.getOrCreateId(specific);
+            var targetId = idGenerator.getOrCreateId(general);
+            edge.setSource(findElement(fullModel, sourceId));
+            edge.setTarget(findElement(fullModel, targetId));
+            var elementId = idGenerator.getOrCreateId(generalisation);
 
-        var elementId = idGenerator.getOrCreateId(generalisation);
+            var reference = NotationFactory.eINSTANCE.createSemanticElementReference();
+            reference.setElementId(elementId);
+            edge.setSemanticElement(reference);
 
-        var reference = NotationFactory.eINSTANCE.createSemanticElementReference();
-        reference.setElementId(elementId);
-        edge.setSemanticElement(reference);
-
-        (fullModel.getNotationModel()).getElements().add(edge);
-
+            (fullModel.getNotationModel()).getElements().add(edge);
+        }
+        catch (ClassCastException e) {
+            System.err.println("Generalisation error" + e.getMessage());
+        }
     }
 
     private NotationElement findElement(BGEMFModelState model, String elementId) {
